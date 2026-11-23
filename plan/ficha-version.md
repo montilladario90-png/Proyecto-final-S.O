@@ -170,9 +170,36 @@ Las cifras de RAM y el disco de Kubuntu son recomendaciones de organización; la
 | Debian | `apt --version` | Versión de APT |
 | Ubuntu Docker | `docker image inspect ubuntu:24.04` | Metadatos de la imagen descargada |
 
-## 8. Registro de evidencias de verificación
+## 8. Procedimiento para fijar los datos instalados
 
-Para mantener la ficha exacta, las versiones instaladas deben copiarse de la salida de los comandos de las secciones 3.1 y 4.1. No se debe reutilizar la fecha de consulta como si fuera fecha de instalación.
+Las referencias oficiales anteriores ya están verificadas documentalmente. Para comprobar el software realmente instalado en las VM, ejecuta los comandos indicados en las secciones 3.1 y 4.1. La versión de Kubuntu se toma de `VERSION_ID` y `VERSION` en `/etc/os-release`; la de Debian se toma del mismo archivo. El kernel en ejecución se toma de `uname -r`, no de la nota de lanzamiento. La arquitectura se obtiene de `uname -m`. La fecha de instalación o comprobación se toma de `date` en la máquina. No se debe copiar la fecha de consulta de esta ficha como si fuera la fecha real de instalación.
+
+Para guardar todos los resultados en un registro de texto, ejecuta en cada VM:
+
+```bash
+{
+  echo '=== SISTEMA ==='
+  cat /etc/os-release
+  echo '=== KERNEL ==='
+  uname -r
+  echo '=== ARQUITECTURA ==='
+  uname -m
+  echo '=== FECHA DE COMPROBACION ==='
+  date
+} | tee ~/verificacion-versiones.txt
+```
+
+En Kubuntu, añade la versión de Plasma:
+
+```bash
+plasmashell --version | tee -a ~/verificacion-versiones.txt
+```
+
+En Debian, añade la versión de APT:
+
+```bash
+apt --version | tee -a ~/verificacion-versiones.txt
+```
 
 | Evidencia requerida | Comando / captura que la respalda | Responsable de recolectarla |
 |---|---|---|
