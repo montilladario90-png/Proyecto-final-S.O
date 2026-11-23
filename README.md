@@ -18,4 +18,7 @@
 - [Plan de trabajo](plan/plan-de-trabajo.md)
 - [Ficha de verificación de versiones](plan/ficha-version.md)
 
+## Sprint 1 — Montaje
+- [Desarrollo completo del Sprint 1](sprint-1/README.md)
+
 > Las versiones exactas se registrarán después de instalarlas y verificarlas en las máquinas virtuales.
