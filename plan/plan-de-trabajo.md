@@ -116,14 +116,14 @@ Preparar dos máquinas virtuales conectadas —una con escritorio y otra de cons
 
 ## 6. Seguimiento de entregables
 
-| Entregable | Estado inicial | Evidencia / enlace |
+| Entregable | Estado documental al 23-11-2026 | Evidencia / enlace |
 |---|---|---|
-| Repositorio público y carpeta `plan` | En preparación | URL del repositorio |
-| Ficha de versiones verificada | Pendiente de instalación/verificación | `plan/ficha-version.md` |
-| Sprint 1 — Montaje | Pendiente | Página, capturas, comandos y video |
-| Sprint 2 — Servicios | Pendiente | Página, capturas, comandos y video |
-| Sprint 3 — Cierre | Pendiente | Página, capturas, comandos y video |
-| Sitio GitHub Pages | Pendiente de publicación | URL del sitio |
+| Repositorio público y carpeta `plan` | Estructura creada y visible en GitHub | [Repositorio público](https://github.com/montilladario90-png/Proyecto-final-S.O) |
+| Ficha de versiones | Versiones oficiales de referencia y comandos de comprobación documentados; falta contrastar la instalación local | [Ficha de versiones](plan/ficha-version.md) |
+| Sprint 1 — Montaje | Plan técnico, tablas de recursos, particionado, red y comandos documentados; la ejecución debe evidenciarse en las VM | [Documentación Sprint 1](../sprint-1/README.md) |
+| Sprint 2 — Servicios | Actividades y responsables definidos en el cronograma; evidencia técnica corresponde al sprint 2 | Se desarrollará según la fecha del curso |
+| Sprint 3 — Cierre | Actividades y responsables definidos en el cronograma; evidencia técnica corresponde al sprint 3 | Se desarrollará según la fecha del curso |
+| Sitio GitHub Pages | Enlace de Pages no configurado en esta documentación | Se configura desde Settings → Pages cuando el sitio esté listo |
 
 ---
 
