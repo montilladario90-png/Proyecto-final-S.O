@@ -602,7 +602,7 @@ Para documentar cualquier incidencia, escribe el mensaje exacto del sistema, el 
 
 ## 14. Conclusión técnica del montaje propuesto
 
-El diseño del Sprint 1 define dos máquinas virtuales independientes y conectadas: Kubuntu para las actividades gráficas y Debian para la administración por consola. La configuración de Debian respeta los 25 GB y las 2 CPU solicitadas; el diseño incluye el particionado manual requerido, los dos navegadores y dos editores de Kubuntu, las herramientas de Debian y un esquema de red con NAT más Host-only. Las direcciones privadas sugeridas son `192.168.56.10/24` para Kubuntu y `192.168.56.20/24` para Debian. El montaje se considera técnicamente aceptado cuando las dos VM arrancan, sus particiones se verifican con `lsblk` y `findmnt`, la comunicación funciona mediante ping y SSH y existen las dos instantáneas llamadas `instalacion-limpia`.
+El diseño del Sprint 1 define dos máquinas virtuales independientes y conectadas: Kubuntu para las actividades gráficas y Debian para la administración por consola. La configuración de Debian respeta los 25 GB y las 2 CPU solicitadas; el diseño incluye el particionado manual requerido, los dos navegadores y dos editores de Kubuntu, las herramientas de Debian y un esquema de red con NAT más Host-only. Las direcciones privadas sugeridas son `192.168.56.10/24` para Kubuntu y `192.168.56.20/24` para Debian. El montaje se considerará técnicamente aceptado cuando ambas VM arranquen, las particiones se verifiquen con `lsblk` y `findmnt`, la comunicación funcione mediante ping y SSH y existan las dos instantáneas llamadas `instalacion-limpia`.
 
 ---
 
