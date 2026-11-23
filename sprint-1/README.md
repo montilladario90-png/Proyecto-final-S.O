@@ -12,14 +12,14 @@
 
 ## 1. Objetivo del Sprint 1
 
-Instalar y preparar las dos máquinas virtuales asignadas al Grupo 1, configurar la comunicación de red entre ellas, comprobar el acceso SSH desde la máquina gráfica hacia la máquina de consola y guardar una instantánea de cada máquina con el nombre exacto \`instalacion-limpia\`.
+Instalar y preparar las dos máquinas virtuales asignadas al Grupo 1, configurar la comunicación de red entre ellas, comprobar el acceso SSH desde la máquina gráfica hacia la máquina de consola y guardar una instantánea de cada máquina con el nombre exacto `instalacion-limpia`.
 
 ### 1.1 Distribuciones asignadas
 
 | Máquina | Distribución | Nombre obligatorio de la VM | Función |
 |---|---|---|---|
-| Linux con escritorio | Kubuntu | \`g01-grafica\` | Dos navegadores, dos editores y equipo desde el que se inicia SSH |
-| Linux sin escritorio | Debian | \`g01-consola\` | Equipo de consola, destino de ping y servidor SSH |
+| Linux con escritorio | Kubuntu | `g01-grafica` | Dos navegadores, dos editores y equipo desde el que se inicia SSH |
+| Linux sin escritorio | Debian | `g01-consola` | Equipo de consola, destino de ping y servidor SSH |
 | Imagen base Docker | Ubuntu | No aplica en este sprint | Se utilizará en el Sprint 3 |
 
 La tabla de asignaciones del proyecto indica Kubuntu, Debian y Ubuntu para el Grupo 1. La imagen Ubuntu se utilizará más adelante en el Dockerfile; no es una tercera máquina virtual de este sprint.
@@ -30,7 +30,7 @@ Los requisitos expresos del proyecto para la VM de consola son un disco virtual 
 
 ### 2.1 Tabla general de recursos
 
-| Parámetro | \`g01-grafica\` — Kubuntu | \`g01-consola\` — Debian | Tipo de dato |
+| Parámetro | `g01-grafica` — Kubuntu | `g01-consola` — Debian | Tipo de dato |
 |---|---:|---:|---|
 | Tipo de sistema | Linux / Ubuntu 64-bit (o perfil Linux equivalente) | Linux / Debian 64-bit | Configuración de VirtualBox |
 | Memoria RAM | 4 GB recomendados | 2 GB recomendados | Propuesta ajustable; no fijada en la consigna |
@@ -39,14 +39,14 @@ Los requisitos expresos del proyecto para la VM de consola son un disco virtual 
 | Tipo de disco | VDI, dinámico | VDI, dinámico | Recomendación |
 | Adaptador 1 | NAT | NAT | Requisito del esquema de red |
 | Adaptador 2 | Adaptador solo-anfitrión (Host-only) | El mismo adaptador solo-anfitrión | Requisito del esquema de red |
-| Nombre de VM | \`g01-grafica\` | \`g01-consola\` | Nombre según número de grupo |
+| Nombre de VM | `g01-grafica` | `g01-consola` | Nombre según número de grupo |
 
 **Importante:** no asignes más memoria o CPU de la que puede proporcionar el equipo anfitrión. Los 4 GB y 2 GB de RAM son sugerencias de configuración, no valores que deban declararse como exigencia del docente.
 
 ### 2.2 Pasos para crear cada VM
 
 1. Abrir VirtualBox y seleccionar **Nueva**.
-2. Escribir exactamente el nombre de la máquina: \`g01-grafica\` o \`g01-consola\`.
+2. Escribir exactamente el nombre de la máquina: `g01-grafica` o `g01-consola`.
 3. Seleccionar la imagen ISO correspondiente: Kubuntu para la gráfica y Debian para la consola.
 4. Asignar la RAM y los procesadores según la tabla anterior y los recursos disponibles.
 5. Crear un disco virtual VDI de tamaño dinámico.
@@ -67,7 +67,7 @@ Los requisitos expresos del proyecto para la VM de consola son un disco virtual 
 
 ## 3. Particionado manual de discos
 
-El proyecto solicita particionado manual. En Kubuntu se deben crear las particiones \`/\`, \`swap\` y \`/home\`. En Debian se deben crear \`/\`, \`swap\`, \`/home\` y \`/var\`. La consigna también pide escribir una frase que justifique el tamaño de cada partición.
+El proyecto solicita particionado manual. En Kubuntu se deben crear las particiones `/`, `swap` y `/home`. En Debian se deben crear `/`, `swap`, `/home` y `/var`. La consigna también pide escribir una frase que justifique el tamaño de cada partición.
 
 Los tamaños de las tablas siguientes son una **propuesta de distribución**, no tamaños impuestos por el profesor. Se han elegido para que las sumas coincidan con los tamaños de disco de esta guía.
 
@@ -75,19 +75,19 @@ Los tamaños de las tablas siguientes son una **propuesta de distribución**, no
 
 | Partición | Tamaño propuesto | Sistema de archivos / tipo | Punto de montaje | Justificación del tamaño |
 |---|---:|---|---|---|
-| Raíz | 20 GB | ext4 | \`/\` | Se reserva la mayor parte del disco para el sistema operativo, actualizaciones, bibliotecas y aplicaciones. |
-| Swap | 2 GB | Área de intercambio | \`swap\` | Aporta memoria de intercambio cuando la RAM disponible no es suficiente. |
-| Home | 8 GB | ext4 | \`/home\` | Reserva espacio para los archivos, configuraciones y documentos del usuario. |
+| Raíz | 20 GB | ext4 | `/` | Se reserva la mayor parte del disco para el sistema operativo, actualizaciones, bibliotecas y aplicaciones. |
+| Swap | 2 GB | Área de intercambio | `swap` | Aporta memoria de intercambio cuando la RAM disponible no es suficiente. |
+| Home | 8 GB | ext4 | `/home` | Reserva espacio para los archivos, configuraciones y documentos del usuario. |
 | **Total** | **30 GB** |  |  | **Coincide con el disco virtual propuesto.** |
 
 ### 3.2 Debian — disco obligatorio de 25 GB
 
 | Partición | Tamaño propuesto | Sistema de archivos / tipo | Punto de montaje | Justificación del tamaño |
 |---|---:|---|---|---|
-| Raíz | 8 GB | ext4 | \`/\` | Contiene el sistema Debian, sus herramientas y los paquetes básicos de administración. |
-| Swap | 2 GB | Área de intercambio | \`swap\` | Permite utilizar espacio de intercambio cuando la memoria RAM se encuentra bajo presión. |
-| Home | 5 GB | ext4 | \`/home\` | Almacena los directorios personales y los archivos de trabajo de los usuarios. |
-| Var | 10 GB | ext4 | \`/var\` | Reserva espacio para registros, caché, datos variables y el crecimiento de servicios; también deja margen para el trabajo posterior con Docker. |
+| Raíz | 8 GB | ext4 | `/` | Contiene el sistema Debian, sus herramientas y los paquetes básicos de administración. |
+| Swap | 2 GB | Área de intercambio | `swap` | Permite utilizar espacio de intercambio cuando la memoria RAM se encuentra bajo presión. |
+| Home | 5 GB | ext4 | `/home` | Almacena los directorios personales y los archivos de trabajo de los usuarios. |
+| Var | 10 GB | ext4 | `/var` | Reserva espacio para registros, caché, datos variables y el crecimiento de servicios; también deja margen para el trabajo posterior con Docker. |
 | **Total** | **25 GB** |  |  | **Coincide con el disco virtual requerido.** |
 
 ### 3.3 Criterios para realizar el particionado
@@ -105,46 +105,46 @@ Los tamaños de las tablas siguientes son una **propuesta de distribución**, no
 
 Ejecutar en ambas máquinas después de instalar:
 
-\`\`\`bash
+```bash
 lsblk -o NAME,SIZE,FSTYPE,TYPE,MOUNTPOINTS
 findmnt
 swapon --show
 free -h
 date
-\`\`\`
+```
 
 En la VM de Debian, verificar específicamente los puntos de montaje:
 
-\`\`\`bash
+```bash
 findmnt /
 findmnt /home
 findmnt /var
 swapon --show
 lsblk -f
 date
-\`\`\`
+```
 
 En Kubuntu:
 
-\`\`\`bash
+```bash
 findmnt /
 findmnt /home
 swapon --show
 lsblk -f
 date
-\`\`\`
+```
 
 ### 3.5 Registro de particiones reales
 
 | VM | Partición | Tamaño real | Sistema de archivos | Punto de montaje real | Verificado |
 |---|---|---:|---|---|---|
-| Kubuntu | Raíz | Pendiente | Pendiente | \`/\` | Pendiente |
+| Kubuntu | Raíz | Pendiente | Pendiente | `/` | Pendiente |
 | Kubuntu | Swap | Pendiente | swap | swap | Pendiente |
-| Kubuntu | Home | Pendiente | Pendiente | \`/home\` | Pendiente |
-| Debian | Raíz | Pendiente | Pendiente | \`/\` | Pendiente |
+| Kubuntu | Home | Pendiente | Pendiente | `/home` | Pendiente |
+| Debian | Raíz | Pendiente | Pendiente | `/` | Pendiente |
 | Debian | Swap | Pendiente | swap | swap | Pendiente |
-| Debian | Home | Pendiente | Pendiente | \`/home\` | Pendiente |
-| Debian | Var | Pendiente | Pendiente | \`/var\` | Pendiente |
+| Debian | Home | Pendiente | Pendiente | `/home` | Pendiente |
+| Debian | Var | Pendiente | Pendiente | `/var` | Pendiente |
 
 ## 4. Instalación de aplicaciones y herramientas
 
@@ -154,34 +154,34 @@ La VM gráfica debe quedar con dos navegadores y dos editores instalados. Para e
 
 | Tipo | Aplicación | Función | Comando de instalación |
 |---|---|---|---|
-| Navegador 1 | Firefox | Navegación web y consulta de documentación | \`sudo apt install -y firefox\` |
-| Navegador 2 | Falkon | Segundo navegador, basado en tecnologías KDE/Qt | \`sudo apt install -y falkon\` |
-| Editor 1 | Kate | Editor de texto avanzado del entorno KDE | \`sudo apt install -y kate\` |
-| Editor 2 | Geany | Editor ligero con funciones para código | \`sudo apt install -y geany\` |
+| Navegador 1 | Firefox | Navegación web y consulta de documentación | `sudo apt install -y firefox` |
+| Navegador 2 | Falkon | Segundo navegador, basado en tecnologías KDE/Qt | `sudo apt install -y falkon` |
+| Editor 1 | Kate | Editor de texto avanzado del entorno KDE | `sudo apt install -y kate` |
+| Editor 2 | Geany | Editor ligero con funciones para código | `sudo apt install -y geany` |
 
 Instalar y actualizar:
 
-\`\`\`bash
+```bash
 sudo apt update
 sudo apt install -y firefox falkon kate geany
-\`\`\`
+```
 
 Comprobar los paquetes:
 
-\`\`\`bash
+```bash
 dpkg -l firefox falkon kate geany
 date
-\`\`\`
+```
 
 Comprobar versiones cuando los ejecutables estén disponibles:
 
-\`\`\`bash
+```bash
 firefox --version
 falkon --version
 kate --version
 geany --version
 date
-\`\`\`
+```
 
 **Observación:** Firefox puede venir preinstalado. En ese caso, el gestor de paquetes indicará que ya se encuentra instalado; no es necesario instalarlo de nuevo. Si alguno de los paquetes no está disponible en los repositorios habilitados, registrar el mensaje y consultar antes de reemplazarlo por otra aplicación.
 
@@ -191,48 +191,48 @@ La VM de consola debe tener instaladas las siguientes herramientas:
 
 | Herramienta | Función | Comando para comprobarla |
 |---|---|---|
-| make | Automatiza compilaciones y tareas definidas en Makefile | \`make --version\` |
-| rsync | Sincroniza archivos y directorios | \`rsync --version\` |
-| curl | Realiza transferencias y solicitudes mediante URL | \`curl --version\` |
-| git | Control de versiones del proyecto | \`git --version\` |
-| wget | Descarga archivos desde la web | \`wget --version\` |
-| openssh-server | Permite recibir conexiones SSH | \`systemctl status ssh\` |
+| make | Automatiza compilaciones y tareas definidas en Makefile | `make --version` |
+| rsync | Sincroniza archivos y directorios | `rsync --version` |
+| curl | Realiza transferencias y solicitudes mediante URL | `curl --version` |
+| git | Control de versiones del proyecto | `git --version` |
+| wget | Descarga archivos desde la web | `wget --version` |
+| openssh-server | Permite recibir conexiones SSH | `systemctl status ssh` |
 
 Instalar los paquetes:
 
-\`\`\`bash
+```bash
 sudo apt update
 sudo apt install -y make rsync curl git wget openssh-server
-\`\`\`
+```
 
-Si el usuario de Debian no tiene habilitado \`sudo\`, ejecutar la instalación desde una sesión de administrador:
+Si el usuario de Debian no tiene habilitado `sudo`, ejecutar la instalación desde una sesión de administrador:
 
-\`\`\`bash
+```bash
 su -
 apt update
 apt install -y make rsync curl git wget openssh-server
 exit
-\`\`\`
+```
 
 Comprobar versiones y disponibilidad:
 
-\`\`\`bash
+```bash
 make --version
 rsync --version
 curl --version
 git --version
 wget --version
 date
-\`\`\`
+```
 
 En Debian, habilitar e iniciar el servicio SSH:
 
-\`\`\`bash
+```bash
 sudo systemctl enable --now ssh
 sudo systemctl status ssh --no-pager
-\`\`\`
+```
 
-Si se administró la instalación como root, ejecutar el comando de servicio desde esa sesión sin anteponer \`sudo\`.
+Si se administró la instalación como root, ejecutar el comando de servicio desde esa sesión sin anteponer `sudo`.
 
 ### 4.3 Registro de instalación real
 
@@ -262,10 +262,10 @@ La presentación advierte que, si se deja únicamente NAT, las dos VM pueden rec
 
 | Máquina virtual | Adaptador | Modo de conexión | Uso |
 |---|---|---|---|
-| \`g01-grafica\` | Adaptador 1 | NAT | Acceso a Internet |
-| \`g01-grafica\` | Adaptador 2 | Solo-anfitrión (Host-only) | Comunicación privada con Debian |
-| \`g01-consola\` | Adaptador 1 | NAT | Acceso a Internet |
-| \`g01-consola\` | Adaptador 2 | El mismo Host-only usado por Kubuntu | Comunicación privada con Kubuntu |
+| `g01-grafica` | Adaptador 1 | NAT | Acceso a Internet |
+| `g01-grafica` | Adaptador 2 | Solo-anfitrión (Host-only) | Comunicación privada con Debian |
+| `g01-consola` | Adaptador 1 | NAT | Acceso a Internet |
+| `g01-consola` | Adaptador 2 | El mismo Host-only usado por Kubuntu | Comunicación privada con Kubuntu |
 
 ### 5.2 Pasos en VirtualBox
 
@@ -283,18 +283,18 @@ Realizar estos pasos en cada VM:
 
 Ejecutar en Kubuntu y Debian:
 
-\`\`\`bash
+```bash
 ip -br addr
 ip route
 hostname -I
 date
-\`\`\`
+```
 
-Identificar la dirección correspondiente al adaptador Host-only, no confundirla con la dirección de NAT ni con \`127.0.0.1\` (loopback).
+Identificar la dirección correspondiente al adaptador Host-only, no confundirla con la dirección de NAT ni con `127.0.0.1` (loopback).
 
 ### 5.4 Tabla para registrar las direcciones reales
 
-| Dato | Kubuntu — \`g01-grafica\` | Debian — \`g01-consola\` |
+| Dato | Kubuntu — `g01-grafica` | Debian — `g01-consola` |
 |---|---|---|
 | Interfaz NAT | Pendiente | Pendiente |
 | IP asignada por NAT | Pendiente | Pendiente |
@@ -304,7 +304,7 @@ Identificar la dirección correspondiente al adaptador Host-only, no confundirla
 | Puerta de enlace | Pendiente | Pendiente |
 | ¿Tiene salida a Internet? | Pendiente | Pendiente |
 
-**Importante:** no copiar direcciones IP de ejemplos ni asumir que VirtualBox asignó una dirección concreta. Registrar la dirección que realmente aparece en \`ip -br addr\`. Si el adaptador Host-only no obtiene una IP, revisar que ambas VM usen el mismo adaptador y que su DHCP esté habilitado o configurar direcciones compatibles con la red privada creada en VirtualBox.
+**Importante:** no copiar direcciones IP de ejemplos ni asumir que VirtualBox asignó una dirección concreta. Registrar la dirección que realmente aparece en `ip -br addr`. Si el adaptador Host-only no obtiene una IP, revisar que ambas VM usen el mismo adaptador y que su DHCP esté habilitado o configurar direcciones compatibles con la red privada creada en VirtualBox.
 
 ## 6. Pruebas de conectividad: ping y SSH
 
@@ -312,30 +312,30 @@ Identificar la dirección correspondiente al adaptador Host-only, no confundirla
 
 En cada VM:
 
-\`\`\`bash
+```bash
 ping -c 4 deb.debian.org
-\`\`\`
+```
 
 Resultado esperado: recepción de respuestas del dominio, siempre que la red anfitriona y DNS funcionen. Registrar el resultado real, incluso si falla.
 
 | VM | Comando | Resultado real | Estado |
 |---|---|---|---|
-| Kubuntu | \`ping -c 4 deb.debian.org\` | Pendiente | Pendiente |
-| Debian | \`ping -c 4 deb.debian.org\` | Pendiente | Pendiente |
+| Kubuntu | `ping -c 4 deb.debian.org` | Pendiente | Pendiente |
+| Debian | `ping -c 4 deb.debian.org` | Pendiente | Pendiente |
 
 ### 6.2 Prueba de ping entre las dos VM
 
 Desde Kubuntu, utilizar la IP Host-only real de Debian:
 
-\`\`\`bash
-ping -c 4 <IP_HOST_ONLY_DEBIAN>
-\`\`\`
+```bash
+ping -c 4 192.168.56.20
+```
 
 Desde Debian, se puede comprobar también la comunicación de regreso:
 
-\`\`\`bash
-ping -c 4 <IP_HOST_ONLY_KUBUNTU>
-\`\`\`
+```bash
+ping -c 4 192.168.56.10
+```
 
 Resultado esperado: recibir respuestas de la otra VM sin pérdida de paquetes en una conexión estable.
 
@@ -346,37 +346,37 @@ Resultado esperado: recibir respuestas de la otra VM sin pérdida de paquetes en
 
 ### 6.3 Comprobación del servicio SSH en Debian
 
-En \`g01-consola\`:
+En `g01-consola`:
 
-\`\`\`bash
+```bash
 sudo systemctl enable --now ssh
 sudo systemctl status ssh --no-pager
 sudo ss -tlnp | grep ':22'
 date
-\`\`\`
+```
 
-Resultado esperado: el servicio \`ssh\` debe aparecer activo y el puerto TCP 22 debe estar escuchando. Si el servicio no existe, comprobar que \`openssh-server\` esté instalado.
+Resultado esperado: el servicio `ssh` debe aparecer activo y el puerto TCP 22 debe estar escuchando. Si el servicio no existe, comprobar que `openssh-server` esté instalado.
 
 ### 6.4 Conexión SSH desde Kubuntu hacia Debian
 
-En \`g01-grafica\`, ejecutar:
+En `g01-grafica`, ejecutar:
 
-\`\`\`bash
-ssh <USUARIO_DEBIAN>@<IP_HOST_ONLY_DEBIAN>
-\`\`\`
+```bash
+ssh usuario@192.168.56.20
+```
 
-La primera conexión puede mostrar una pregunta de confirmación de la huella del servidor. Verificar que se está conectando a la IP correcta y escribir \`yes\` para continuar. Después, introducir la contraseña del usuario de Debian.
+En este ejemplo, `usuario` representa el nombre de la cuenta creada durante la instalación de Debian; sustituye esa palabra por el usuario real si elegiste otro nombre. La primera conexión puede mostrar una pregunta de confirmación de la huella del servidor. Verifica que la IP sea la de tu VM y escribe `yes` para continuar. Después, introduce la contraseña de esa cuenta.
 
 Una vez dentro de Debian, ejecutar:
 
-\`\`\`bash
+```bash
 whoami
 hostname
 date
 exit
-\`\`\`
+```
 
-Resultado esperado: la sesión remota muestra el usuario y el nombre de la VM Debian; al escribir \`exit\`, se regresa a la terminal de Kubuntu.
+Resultado esperado: la sesión remota muestra el usuario y el nombre de la VM Debian; al escribir `exit`, se regresa a la terminal de Kubuntu.
 
 **Alcance:** en este sprint se debe demostrar el acceso SSH. La configuración de llaves para entrar sin contraseña corresponde al Sprint 2 de acuerdo con la presentación.
 
@@ -384,18 +384,18 @@ Resultado esperado: la sesión remota muestra el usuario y el nombre de la VM De
 
 | N.º | Prueba | Equipo donde se ejecuta | Resultado esperado | Resultado real |
 |---:|---|---|---|---|
-| 1 | Internet por NAT | Kubuntu | Recibe respuestas de \`deb.debian.org\` | Pendiente |
-| 2 | Internet por NAT | Debian | Recibe respuestas de \`deb.debian.org\` | Pendiente |
+| 1 | Internet por NAT | Kubuntu | Recibe respuestas de `deb.debian.org` | Pendiente |
+| 2 | Internet por NAT | Debian | Recibe respuestas de `deb.debian.org` | Pendiente |
 | 3 | Ping entre máquinas | Kubuntu → Debian | Recibe respuestas de la IP Host-only de Debian | Pendiente |
 | 4 | Ping de retorno | Debian → Kubuntu | Recibe respuestas de la IP Host-only de Kubuntu | Pendiente |
 | 5 | Servicio SSH | Debian | Servicio activo y puerto TCP 22 escuchando | Pendiente |
-| 6 | Conexión remota | Kubuntu → Debian | Inicia sesión y ejecuta \`whoami\` y \`hostname\` | Pendiente |
+| 6 | Conexión remota | Kubuntu → Debian | Inicia sesión y ejecuta `whoami` y `hostname` | Pendiente |
 
 ## 7. Instantáneas de VirtualBox
 
 El proyecto exige guardar **una instantánea por cada VM**, ambas con el nombre exacto:
 
-\`instalacion-limpia\`
+`instalacion-limpia`
 
 ### 7.1 Procedimiento
 
@@ -405,41 +405,41 @@ El proyecto exige guardar **una instantánea por cada VM**, ambas con el nombre 
 4. Apagar el sistema operativo de forma normal.
 5. En VirtualBox, seleccionar la VM y abrir la sección **Instantáneas (Snapshots)**.
 6. Pulsar **Tomar (Take)**.
-7. Escribir exactamente \`instalacion-limpia\` como nombre.
+7. Escribir exactamente `instalacion-limpia` como nombre.
 8. Guardar y verificar que la instantánea aparece en el árbol de instantáneas.
 
 ### 7.2 Registro de instantáneas
 
 | Máquina virtual | Nombre requerido | Nombre registrado en VirtualBox | Fecha de creación | Verificación |
 |---|---|---|---|---|
-| \`g01-grafica\` — Kubuntu | \`instalacion-limpia\` | Pendiente | Pendiente | Pendiente |
-| \`g01-consola\` — Debian | \`instalacion-limpia\` | Pendiente | Pendiente | Pendiente |
+| `g01-grafica` — Kubuntu | `instalacion-limpia` | Pendiente | Pendiente | Pendiente |
+| `g01-consola` — Debian | `instalacion-limpia` | Pendiente | Pendiente | Pendiente |
 
 ## 8. Código de verificación del Sprint 1
 
-La presentación indica que el código del sprint se publica 48 horas antes, que es una cadena corta y no un programa, y que debe guardarse en un archivo llamado \`codigo_sprint1.txt\` en **las dos máquinas virtuales**. El archivo debe mostrarse con \`cat\` y \`date\`.
+La presentación indica que el código del sprint se publica 48 horas antes, que es una cadena corta y no un programa, y que debe guardarse en un archivo llamado `codigo_sprint1.txt` en **las dos máquinas virtuales**. El archivo debe mostrarse con `cat` y `date`.
 
 No se inventa el contenido de esa cadena: se debe copiar exactamente la que publique el docente.
 
 En cada VM, después de recibir el código:
 
-\`\`\`bash
+```bash
 nano ~/codigo_sprint1.txt
-\`\`\`
+```
 
 Pegar la cadena oficial, guardar y luego ejecutar:
 
-\`\`\`bash
+```bash
 cat ~/codigo_sprint1.txt
 date
-\`\`\`
+```
 
 ### 8.1 Registro de comprobación
 
-| Máquina | Archivo creado | Contenido oficial copiado | Verificación con \`cat\` | Fecha visible con \`date\` |
+| Máquina | Archivo creado | Contenido oficial copiado | Verificación con `cat` | Fecha visible con `date` |
 |---|---|---|---|---|
-| Kubuntu — \`g01-grafica\` | Pendiente | Pendiente | Pendiente | Pendiente |
-| Debian — \`g01-consola\` | Pendiente | Pendiente | Pendiente | Pendiente |
+| Kubuntu — `g01-grafica` | Pendiente | Pendiente | Pendiente | Pendiente |
+| Debian — `g01-consola` | Pendiente | Pendiente | Pendiente | Pendiente |
 
 ## 9. Organización de los cinco puntos de evidencia
 
@@ -447,11 +447,11 @@ La página del Sprint 1 debe incluir una captura por punto, los comandos corresp
 
 | Punto | Contenido que se debe demostrar | Comandos / comprobaciones | Evidencia que se debe adjuntar |
 |---:|---|---|---|
-| 1 | Kubuntu instalado en \`g01-grafica\`, particiones \`/\`, \`swap\`, \`/home\`, dos navegadores y dos editores | \`lsblk -f\`, \`findmnt\`, \`swapon --show\`, versiones de aplicaciones | Captura de particiones y aplicaciones instaladas |
-| 2 | Debian instalado en \`g01-consola\`, disco de 25 GB, 2 CPU, particiones \`/\`, \`swap\`, \`/home\`, \`/var\`, herramientas requeridas | \`lsblk -f\`, \`findmnt\`, \`swapon --show\`, versiones de herramientas | Captura de hardware/particiones y paquetes instalados |
-| 3 | Adaptador NAT y adaptador Host-only en ambas VM | \`ip -br addr\`, \`ip route\` | Captura de la configuración de red en VirtualBox y de las IP reales |
-| 4 | Comunicación entre máquinas y acceso SSH desde Kubuntu a Debian | \`ping -c 4\`, \`systemctl status ssh\`, \`ssh usuario@IP\`, \`whoami\`, \`hostname\` | Captura del ping exitoso y de la sesión SSH remota |
-| 5 | Instantánea de cada VM con el nombre requerido y código oficial en las dos VM | Revisión de Snapshots; \`cat ~/codigo_sprint1.txt\`; \`date\` | Capturas del árbol de instantáneas y del código mostrado en cada máquina |
+| 1 | Kubuntu instalado en `g01-grafica`, particiones `/`, `swap`, `/home`, dos navegadores y dos editores | `lsblk -f`, `findmnt`, `swapon --show`, versiones de aplicaciones | Captura de particiones y aplicaciones instaladas |
+| 2 | Debian instalado en `g01-consola`, disco de 25 GB, 2 CPU, particiones `/`, `swap`, `/home`, `/var`, herramientas requeridas | `lsblk -f`, `findmnt`, `swapon --show`, versiones de herramientas | Captura de hardware/particiones y paquetes instalados |
+| 3 | Adaptador NAT y adaptador Host-only en ambas VM | `ip -br addr`, `ip route` | Captura de la configuración de red en VirtualBox y de las IP reales |
+| 4 | Comunicación entre máquinas y acceso SSH desde Kubuntu a Debian | `ping -c 4`, `systemctl status ssh`, `ssh usuario@IP`, `whoami`, `hostname` | Captura del ping exitoso y de la sesión SSH remota |
+| 5 | Instantánea de cada VM con el nombre requerido y código oficial en las dos VM | Revisión de Snapshots; `cat ~/codigo_sprint1.txt`; `date` | Capturas del árbol de instantáneas y del código mostrado en cada máquina |
 
 > Esta tabla es una organización práctica de los cinco puntos para la página del grupo. La consigna original enumera las tareas y exige cinco puntos documentados, pero no asigna títulos oficiales a cada punto.
 
@@ -459,15 +459,15 @@ La página del Sprint 1 debe incluir una captura por punto, los comandos corresp
 
 | Archivo | Contenido |
 |---|---|
-| \`01-kubuntu-particiones-aplicaciones.png\` | Particionado de Kubuntu y aplicaciones |
-| \`02-debian-particiones-paquetes.png\` | Particionado de Debian y paquetes |
-| \`03-virtualbox-red-adaptadores.png\` | NAT y Host-only en las dos VM |
-| \`04-ping-y-ssh.png\` | Ping y sesión SSH |
-| \`05-instantaneas-y-codigo.png\` | Instantáneas y verificación del código |
+| `01-kubuntu-particiones-aplicaciones.png` | Particionado de Kubuntu y aplicaciones |
+| `02-debian-particiones-paquetes.png` | Particionado de Debian y paquetes |
+| `03-virtualbox-red-adaptadores.png` | NAT y Host-only en las dos VM |
+| `04-ping-y-ssh.png` | Ping y sesión SSH |
+| `05-instantaneas-y-codigo.png` | Instantáneas y verificación del código |
 
-Guardar las imágenes reales en una carpeta como \`sprint-1/evidencias/\` y reemplazar esta tabla por enlaces a los archivos cuando estén subidos.
+Guardar las imágenes reales en una carpeta como `sprint-1/evidencias/` y reemplazar esta tabla por enlaces a los archivos cuando estén subidos.
 
-**Regla de capturas:** cada captura debe mostrar el prompt y el comando \`date\`. No se permiten recortes ni ediciones. Se pueden mostrar varios comandos en una sola captura si se leen completos.
+**Regla de capturas:** cada captura debe mostrar el prompt y el comando `date`. No se permiten recortes ni ediciones. Se pueden mostrar varios comandos en una sola captura si se leen completos.
 
 ## 10. Video de demostración — 3 minutos
 
@@ -480,7 +480,7 @@ El video debe ser continuo, con todos los integrantes visibles y con su cara. La
 | 00:55–01:30 | Mostrar Debian, sus recursos, particiones y herramientas instaladas | Darío Montilla Narváez |
 | 01:30–02:05 | Mostrar los dos adaptadores y las direcciones IP Host-only | Ambos |
 | 02:05–02:35 | Ejecutar ping y demostrar acceso SSH desde Kubuntu a Debian | Ambos |
-| 02:35–03:00 | Mostrar las dos instantáneas \`instalacion-limpia\` y cerrar la demostración | Ambos |
+| 02:35–03:00 | Mostrar las dos instantáneas `instalacion-limpia` y cerrar la demostración | Ambos |
 
 La duración final debe ser de 3 minutos. La tabla es un guion de organización; el video debe registrar pruebas reales y no animaciones o resultados recreados.
 
@@ -500,8 +500,8 @@ Cada integrante debe realizar como mínimo **dos commits propios durante el Spri
 
 | Integrante | Commit 1 — ejemplo de mensaje | Commit 2 — ejemplo de mensaje | Estado |
 |---|---|---|---|
-| Luisa Fernanda Ortega | \`Documenta la instalación y particiones de Kubuntu\` | \`Agrega evidencias de aplicaciones y conectividad\` | Pendiente |
-| Darío Montilla Narváez | \`Documenta Debian y sus herramientas de consola\` | \`Agrega pruebas de red SSH e instantáneas\` | Pendiente |
+| Luisa Fernanda Ortega | `Documenta la instalación y particiones de Kubuntu` | `Agrega evidencias de aplicaciones y conectividad` | Pendiente |
+| Darío Montilla Narváez | `Documenta Debian y sus herramientas de consola` | `Agrega pruebas de red SSH e instantáneas` | Pendiente |
 
 Los mensajes son ejemplos; deben describir los cambios que cada persona efectivamente realice. Para que los commits aparezcan a nombre de cada integrante, Luisa debe aceptar la invitación al repositorio y trabajar desde su propia cuenta.
 
@@ -509,21 +509,21 @@ Los mensajes son ejemplos; deben describir los cambios que cada persona efectiva
 
 | N.º | Requisito | Estado |
 |---:|---|---|
-| 1 | VM \`g01-grafica\` con Kubuntu instalado | Pendiente |
-| 2 | Particionado manual de Kubuntu: \`/\`, \`swap\`, \`/home\` | Pendiente |
+| 1 | VM `g01-grafica` con Kubuntu instalado | Pendiente |
+| 2 | Particionado manual de Kubuntu: `/`, `swap`, `/home` | Pendiente |
 | 3 | Dos navegadores instalados en Kubuntu | Pendiente |
 | 4 | Dos editores instalados en Kubuntu | Pendiente |
-| 5 | VM \`g01-consola\` con Debian instalado | Pendiente |
+| 5 | VM `g01-consola` con Debian instalado | Pendiente |
 | 6 | Debian con disco virtual de 25 GB y 2 CPU | Pendiente |
-| 7 | Particionado manual de Debian: \`/\`, \`swap\`, \`/home\`, \`/var\` | Pendiente |
+| 7 | Particionado manual de Debian: `/`, `swap`, `/home`, `/var` | Pendiente |
 | 8 | Instalación de make, rsync, curl, git y wget en Debian | Pendiente |
 | 9 | NAT en el adaptador 1 de ambas VM | Pendiente |
 | 10 | El mismo Host-only en el adaptador 2 de ambas VM | Pendiente |
 | 11 | Ping desde Kubuntu hacia Debian | Pendiente |
 | 12 | Acceso SSH desde Kubuntu hacia Debian | Pendiente |
-| 13 | Instantánea \`instalacion-limpia\` en Kubuntu | Pendiente |
-| 14 | Instantánea \`instalacion-limpia\` en Debian | Pendiente |
-| 15 | \`codigo_sprint1.txt\` en las dos VM con la cadena oficial | Pendiente |
+| 13 | Instantánea `instalacion-limpia` en Kubuntu | Pendiente |
+| 14 | Instantánea `instalacion-limpia` en Debian | Pendiente |
+| 15 | `codigo_sprint1.txt` en las dos VM con la cadena oficial | Pendiente |
 | 16 | Página con cinco puntos, capturas y comandos | Pendiente |
 | 17 | Video continuo de 3 minutos con los integrantes visibles | Pendiente |
 | 18 | Dos commits propios de cada integrante | Pendiente |
