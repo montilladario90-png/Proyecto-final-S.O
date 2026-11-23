@@ -23,11 +23,13 @@ Preparar dos máquinas virtuales conectadas —una con escritorio y otra de cons
 
 | Elemento | Asignación |
 |---|---|
-| Máquina virtual gráfica | Kubuntu |
+| Máquina virtual gráfica | Kubuntu 26.04.1 LTS (referencia oficial consultada) |
 | Nombre de la VM gráfica | `g01-grafica` |
-| Máquina virtual de consola | Debian |
+| Máquina virtual de consola | Debian 13.8 Trixie (referencia estable consultada) |
 | Nombre de la VM de consola | `g01-consola` |
-| Imagen base del Dockerfile | Ubuntu |
+| Imagen base del Dockerfile | Ubuntu (`24.04` propuesta para Sprint 3) |
+
+**Nota:** la presentación asigna las distribuciones, pero no obliga a utilizar estos números de versión. Las versiones de referencia fueron contrastadas con los anuncios oficiales; el número instalado se comprueba en cada VM con `cat /etc/os-release` y se anota en `plan/ficha-version.md`.
 
 ## 4. Cronograma y actividades
 
