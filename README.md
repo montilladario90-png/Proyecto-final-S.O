@@ -10,9 +10,9 @@
 
 | Componente | Distribución |
 |---|---|
-| VM gráfica (`g01-grafica`) | Kubuntu |
-| VM de consola (`g01-consola`) | Debian |
-| Imagen base del Dockerfile | Ubuntu |
+| VM gráfica (`g01-grafica`) | Kubuntu 26.04.1 LTS (referencia) |
+| VM de consola (`g01-consola`) | Debian 13.8 Trixie (referencia estable) |
+| Imagen base del Dockerfile | Ubuntu 24.04 (propuesta para Sprint 3) |
 
 ## Documentos del Sprint 0
 - [Plan de trabajo](plan/plan-de-trabajo.md)
@@ -21,4 +21,4 @@
 ## Sprint 1 — Montaje
 - [Desarrollo completo del Sprint 1](sprint-1/README.md)
 
-> Las versiones exactas se registrarán después de instalarlas y verificarlas en las máquinas virtuales.
+> Las versiones de referencia están contrastadas con los anuncios oficiales. La versión instalada se comprueba en cada VM con `cat /etc/os-release` y se registra en [la ficha de versiones](plan/ficha-version.md).
