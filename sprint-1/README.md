@@ -8,7 +8,7 @@
 **Valor:** 1,2 puntos  
 **Cierre para Santander de Quilichao:** jueves 26 de noviembre de 2026, 11:55 p. m.
 
-> **Base técnica del documento:** se fijan versiones de referencia, recursos propuestos, particiones y un plan de direccionamiento privado. Los comandos indican cómo comprobar cada instalación. La existencia de capturas, sesiones SSH e instantáneas solo se demuestra ejecutando las VM; no se presentan como realizadas sin esa evidencia.
+> **Base técnica del documento:** contiene las versiones oficiales de referencia, requisitos del docente, valores recomendados de VirtualBox, particiones, direcciones propuestas, comandos y criterios de aceptación. Los resultados que dependen de ejecutar las máquinas se expresan como resultados esperados y no como pruebas ya realizadas.
 
 ## 1. Objetivo del Sprint 1
 
@@ -18,11 +18,11 @@ Instalar y preparar las dos máquinas virtuales asignadas al Grupo 1, configurar
 
 | Máquina | Distribución | Nombre obligatorio de la VM | Función |
 |---|---|---|---|
-| Linux con escritorio | Kubuntu 26.04.1 LTS (versión recomendada) | `g01-grafica` | Dos navegadores, dos editores y equipo desde el que se inicia SSH |
-| Linux sin escritorio | Debian 13.8 “Trixie” (versión estable recomendada) | `g01-consola` | Equipo de consola, destino de ping y servidor SSH |
+| Linux con escritorio | Kubuntu 26.04.1 LTS (ISO oficial disponible) | `g01-grafica` | Dos navegadores, dos editores y equipo desde el que se inicia SSH |
+| Linux sin escritorio | Debian 13.8 “Trixie” (publicación estable vigente) | `g01-consola` | Equipo de consola, destino de ping y servidor SSH |
 | Imagen base Docker | Ubuntu | No aplica en este sprint | Se utilizará en el Sprint 3 |
 
-La tabla de asignaciones del proyecto indica Kubuntu, Debian y Ubuntu para el Grupo 1. Para concretar una base reproducible se recomienda Kubuntu 26.04.1 LTS y Debian 13.8 Trixie, versión estable publicada el 21 de noviembre de 2026. Si el docente suministra imágenes ISO con otras versiones, prevalece la versión indicada por el curso. La imagen Ubuntu se utilizará más adelante en el Dockerfile; no es una tercera máquina virtual de este sprint.
+La tabla de asignaciones del proyecto indica las familias de distribución Kubuntu, Debian y Ubuntu para el Grupo 1, sin fijar números de versión. Para documentar una referencia vigente se toma Kubuntu 26.04.1 LTS (publicado el 27 de agosto de 2026) y Debian 13.8 Trixie (publicado el 21 de noviembre de 2026). Estas son versiones oficiales disponibles a la fecha de esta documentación; no se declara que ya estén instaladas. La imagen Ubuntu se utilizará más adelante en el Dockerfile; no es una tercera máquina virtual de este sprint.
 
 ## 2. Configuración de las máquinas virtuales en VirtualBox
 
@@ -54,7 +54,7 @@ Los requisitos expresos del proyecto para la VM de consola son un disco virtual 
 7. Antes de iniciar la instalación, configurar los dos adaptadores de red indicados en la sección 5.
 8. Instalar cada sistema operativo siguiendo el particionado manual de la sección 3.
 
-### 2.3 Configuración de recursos que se debe asignar
+### 2.3 Configuración recomendada y requisitos fijos
 
 | Parámetro | `g01-grafica` — Kubuntu | `g01-consola` — Debian |
 |---|---:|---:|
@@ -62,10 +62,10 @@ Los requisitos expresos del proyecto para la VM de consola son un disco virtual 
 | Procesadores | 2 vCPU recomendadas | **2 vCPU requeridas** |
 | Disco virtual | 30 GB recomendados | **25 GB requeridos** |
 | Formato del disco | VDI dinámico | VDI dinámico |
-| ISO de referencia | Kubuntu 26.04.1 LTS | Debian 13.8 Trixie netinst |
+| ISO oficial a descargar | Kubuntu 26.04.1 LTS Desktop | Debian 13.8 Trixie netinst (amd64) |
 | Nombre de la VM | `g01-grafica` | `g01-consola` |
 
-Los 25 GB y las 2 CPU de Debian son requisitos expresos de la presentación. El resto es la configuración recomendada para este documento, no una medición del computador anfitrión. Antes de guardar, comprueba en **Configuración → Sistema** y **Configuración → Almacenamiento** que VirtualBox muestre los valores indicados.
+Los 25 GB y las 2 CPU de Debian son requisitos expresos de la presentación. Los 30 GB, 4 GB RAM y 2 vCPU de Kubuntu son una configuración sugerida para disponer de un escritorio cómodo; 2 GB RAM para Debian es una sugerencia para un servidor básico. Ajusta la memoria según la RAM física de tu computador anfitrión, sin asignarla toda a las VM.
 
 **Comprobación después de la instalación:**
 
@@ -78,7 +78,7 @@ cat /etc/os-release
 date
 ```
 
-Los comandos permiten verificar nombre de sistema, RAM visible, procesadores visibles, discos y versión del sistema. Para el tamaño asignado al disco virtual, contrasta también con **VirtualBox → Configuración → Almacenamiento**.
+Al ejecutar los comandos se obtendrán el nombre del sistema, RAM visible, procesadores visibles, discos y versión instalada. VirtualBox confirma el tamaño exacto del disco virtual en **Configuración → Almacenamiento**.
 
 ## 3. Particionado manual de discos
 
@@ -163,7 +163,7 @@ date
 | Debian | Var | 10 GB | ext4 | `/var` | Registros, caché y datos variables; deja espacio para Docker |
 | **Debian** | **Total** | **25 GB** |  |  | **Disco virtual requerido** |
 
-La tabla establece el esquema a crear en los instaladores. La validación se hace con los comandos de la sección 3.4; si el instalador muestra tamaños diferentes por conversión entre GB y GiB, documenta el tamaño que informa el sistema. Si el arranque es UEFI, conserva o crea la partición EFI que requiera el instalador; esa partición auxiliar debe considerarse aparte del esquema de particiones de datos.
+La tabla es el esquema definido para el trabajo. Los tamaños son una propuesta de particionado que cumple los puntos de montaje pedidos y suma exactamente los tamaños de disco planeados. En el instalador pueden verse pequeñas diferencias por conversión de GB a GiB. Si se activa UEFI, crea además la partición EFI que solicite el instalador y descuenta su espacio de la partición raíz para mantener el tamaño total del disco.
 
 ## 4. Instalación de aplicaciones y herramientas
 
@@ -322,7 +322,7 @@ Identificar la dirección correspondiente al adaptador Host-only, no confundirla
 
 ### 5.4 Plan de direccionamiento IPv4 para Host-only
 
-Para que ambas VM tengan direcciones fijas y fáciles de identificar, se propone utilizar la red privada `192.168.56.0/24`. Esta red está dentro del rango que VirtualBox documenta para redes Host-only en hosts Linux y macOS; confirma en el Network Manager de VirtualBox que el equipo anfitrión no esté usando esa misma red en otra interfaz.
+Plan de direccionamiento propuesto: red privada `192.168.56.0/24`, dentro del rango permitido por la documentación de VirtualBox para redes Host-only en hosts Linux y macOS. Antes de usarla, comprueba en el Network Manager que el equipo anfitrión no tenga otra interfaz en esa misma subred.
 
 | Equipo / interfaz | Dirección IPv4 propuesta | Máscara | Puerta de enlace |
 |---|---|---|---|
@@ -330,13 +330,13 @@ Para que ambas VM tengan direcciones fijas y fáciles de identificar, se propone
 | Kubuntu — `g01-grafica` | **`192.168.56.10`** | `255.255.255.0 (/24)` | No configurar en Host-only |
 | Debian — `g01-consola` | **`192.168.56.20`** | `255.255.255.0 (/24)` | No configurar en Host-only |
 
-El adaptador NAT conserva DHCP y proporciona la salida a Internet y la ruta predeterminada. En el adaptador Host-only no configures una puerta de enlace predeterminada ni DNS: esa interfaz se usa para la comunicación privada entre las VM.
+El adaptador NAT debe conservar DHCP y será el responsable de la puerta de enlace predeterminada y DNS. El adaptador Host-only solo requiere dirección privada y máscara; no debe instalar una segunda ruta predeterminada.
 
-**En VirtualBox:** abre **Herramientas → Red → Redes solo-anfitrión** y configura la interfaz del anfitrión con `192.168.56.1` y máscara `255.255.255.0`. Para usar las IP fijas `.10` y `.20`, desactiva el DHCP de esa red Host-only o verifica que el rango DHCP no incluya esas direcciones. Asigna las direcciones a la interfaz Host-only de cada sistema operativo.
+**En VirtualBox:** abre **Herramientas → Red → Redes solo-anfitrión** y crea una red Host-only con IPv4 del anfitrión `192.168.56.1` y máscara `255.255.255.0`. Para reservar `.10` y `.20` a las VM, desactiva el DHCP de la red Host-only o ajusta su rango para que no entregue esas direcciones a otros dispositivos.
 
-**En Kubuntu:** abre la configuración de red, selecciona la conexión del segundo adaptador, configura IPv4 como manual y establece `192.168.56.10/24`; deja vacíos gateway y DNS en esa conexión.
+**En Kubuntu:** en Configuración del sistema → Red, edita la conexión del segundo adaptador, selecciona IPv4 Manual y añade `192.168.56.10` con prefijo `24`; no establezcas gateway ni DNS en esa conexión privada.
 
-**En Debian:** identifica el nombre de la interfaz Host-only con `ip -br link`. Configura en el gestor de red que administre esa interfaz la dirección estática `192.168.56.20/24`, sin ruta predeterminada. No supongas que la interfaz se llama `enp0s8`: utiliza el nombre que muestre el sistema.
+**En Debian:** identifica la interfaz Host-only con `ip -br link`. En el instalador puede asignarse IPv4 manual a esa tarjeta; si ya está instalado, configura la interfaz a través del gestor de red que esté activo, usando `192.168.56.20/24` y sin ruta predeterminada. No supongas que la interfaz se llama `enp0s8`: utiliza el nombre que muestre `ip -br link`.
 
 Para identificar la IP configurada en cada VM:
 
@@ -368,7 +368,7 @@ En cada VM:
 ping -c 4 deb.debian.org
 ```
 
-**Criterio de aceptación:** la resolución DNS debe funcionar y el equipo debe recibir respuestas ICMP del dominio. Si la red bloquea ICMP, comprueba además la resolución con `getent hosts deb.debian.org` y la salida HTTPS con `curl -I https://deb.debian.org`.
+**Resultado esperado:** el dominio resuelve y el sistema puede acceder a Internet. Algunas redes bloquean ICMP; por eso, si `ping` no responde, utiliza también `getent hosts deb.debian.org` para DNS y `curl -I https://deb.debian.org` para probar HTTPS.
 
 | VM | Comando principal | Resultado correcto esperado |
 |---|---|---|
@@ -417,7 +417,7 @@ En `g01-grafica`, ejecutar:
 ssh usuario@192.168.56.20
 ```
 
-En este ejemplo, `usuario` representa el nombre de la cuenta creada durante la instalación de Debian; sustituye esa palabra por el usuario real si elegiste otro nombre. La primera conexión puede mostrar una pregunta de confirmación de la huella del servidor. Verifica que la IP sea la de tu VM y escribe `yes` para continuar. Después, introduce la contraseña de esa cuenta.
+En el comando, sustituye `usuario` por el nombre real de la cuenta que creaste en Debian. La primera conexión puede mostrar una pregunta de confirmación de la huella del servidor. Verifica que la IP sea la de tu VM y escribe `yes` para continuar. Después, introduce la contraseña de esa cuenta.
 
 Una vez dentro de Debian, ejecutar:
 
@@ -473,7 +473,7 @@ VirtualBox registra automáticamente la fecha y hora de creación. Conserva una 
 
 La presentación indica que el código del sprint se publica 48 horas antes, que es una cadena corta y no un programa, y que debe guardarse en un archivo llamado `codigo_sprint1.txt` en **las dos máquinas virtuales**. El archivo debe mostrarse con `cat` y `date`.
 
-No se inventa el contenido de esa cadena: se debe copiar exactamente la que publique el docente.
+No hay un código universal en la presentación. Se debe copiar literalmente el que publique el docente para el Sprint 1.
 
 En cada VM, después de recibir el código:
 
@@ -538,7 +538,7 @@ El video debe ser continuo, con todos los integrantes visibles y con su cara. La
 | 02:05–02:35 | Ejecutar ping y demostrar acceso SSH desde Kubuntu a Debian | Ambos |
 | 02:35–03:00 | Mostrar las dos instantáneas `instalacion-limpia` y cerrar la demostración | Ambos |
 
-La duración final debe ser de 3 minutos. La tabla es un guion de organización; el video debe registrar pruebas reales y no animaciones o resultados recreados.
+La duración requerida es de 3 minutos. La tabla es un guion de distribución del tiempo; el video debe mostrar la ejecución real de los comandos y las configuraciones.
 
 ## 11. Distribución de responsabilidades
 
@@ -600,9 +600,9 @@ Los mensajes son ejemplos y se deben adaptar a los archivos que cada persona sub
 
 Para documentar cualquier incidencia, escribe el mensaje exacto del sistema, el comando que lo produjo, el ajuste realizado y el resultado de volver a ejecutar la prueba. No marques una prueba como aprobada solo por haber seguido los pasos.
 
-## 14. Conclusión técnica del diseño del Sprint 1
+## 14. Conclusión técnica del montaje propuesto
 
-El montaje del Grupo 1 se basa en dos máquinas virtuales con funciones diferenciadas: Kubuntu proporciona el entorno gráfico de trabajo y Debian funciona como servidor de consola. El diseño reserva 30 GB para Kubuntu y los 25 GB requeridos para Debian, distribuye las particiones de acuerdo con los puntos de montaje solicitados y contempla las aplicaciones y herramientas necesarias. Para la comunicación, cada VM utiliza NAT para Internet y una interfaz Host-only compartida para el tráfico privado; el plan de direccionamiento propone `192.168.56.10` para Kubuntu y `192.168.56.20` para Debian. El cierre técnico se demuestra al comprobar ping y SSH y al conservar las dos instantáneas `instalacion-limpia`. La ejecución debe documentarse con capturas originales y el video del equipo.
+El diseño del Sprint 1 define dos máquinas virtuales independientes y conectadas: Kubuntu para las actividades gráficas y Debian para la administración por consola. La configuración de Debian respeta los 25 GB y las 2 CPU solicitadas; el diseño incluye el particionado manual requerido, los dos navegadores y dos editores de Kubuntu, las herramientas de Debian y un esquema de red con NAT más Host-only. Las direcciones privadas sugeridas son `192.168.56.10/24` para Kubuntu y `192.168.56.20/24` para Debian. El montaje se considera técnicamente aceptado cuando las dos VM arrancan, sus particiones se verifican con `lsblk` y `findmnt`, la comunicación funciona mediante ping y SSH y existen las dos instantáneas llamadas `instalacion-limpia`.
 
 ---
 
