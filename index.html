@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Proyecto final de Sistemas Operativos 2026-2, Grupo 1. Montaje de Kubuntu y Debian, servicios, seguridad, procesos y Docker.">
+<title>Proyecto Final SO | Grupo 1</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18233a;--ink:#eef3ff;--muted:#aab7cf;--line:#2b3956;--accent:#73e0bd;--blue:#8ab4ff;--yellow:#f5ca72;--red:#ff8f91;--shadow:0 18px 55px #0005;--radius:18px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 0%,#21345a 0,transparent 32rem),var(--bg);font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.shell{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;padding:26px 18px;border-right:1px solid var(--line);background:#0a1020d9;backdrop-filter:blur(16px);overflow:auto}.brand{display:flex;gap:12px;align-items:center;padding:0 10px 24px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--blue));color:#071322;display:grid;place-items:center;font-weight:900}.brand strong{display:block;letter-spacing:.02em}.brand small{color:var(--muted)}.nav-label{padding:12px 12px 6px;color:#70819f;font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:800}.nav a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:#c7d2e8;font-size:14px;margin:2px 0}.nav a.active,.nav a:hover{background:#1a2944;color:white;text-decoration:none}.nav a span{width:22px;text-align:center;color:var(--accent)}.side-note{margin:24px 8px 0;padding:14px;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:12px}.side-note b{color:var(--accent)}main{min-width:0}.topbar{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;background:#0b1020c9;backdrop-filter:blur(16px);z-index:5}.crumb{color:var(--muted);font-size:13px}.tag{border:1px solid #3b4b69;border-radius:99px;padding:5px 10px;color:#cdd8ee;font-size:11px;font-weight:800;letter-spacing:.07em}.content{max-width:1180px;margin:auto;padding:42px 5vw 90px}.hero{position:relative;overflow:hidden;border:1px solid #334968;border-radius:28px;padding:clamp(28px,5vw,60px);background:linear-gradient(120deg,#172844 0%,#17233c 54%,#183a43 100%);box-shadow:var(--shadow)}.hero:after{content:'01';position:absolute;right:3%;bottom:-95px;font-size:clamp(180px,30vw,360px);line-height:1;font-weight:900;color:#ffffff08;pointer-events:none}.eyebrow{color:var(--accent);font-weight:850;text-transform:uppercase;font-size:12px;letter-spacing:.15em}.hero h1{font-size:clamp(38px,6vw,68px);line-height:1.03;letter-spacing:-.055em;margin:14px 0 18px;max-width:850px}.hero p{max-width:720px;color:#c5d2e7;font-size:18px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;gap:9px;border-radius:11px;padding:11px 16px;background:var(--accent);color:#081723;font-weight:850;border:1px solid var(--accent);cursor:pointer}.btn.secondary{background:transparent;color:var(--ink);border-color:#526585}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:20px 0 46px}.stat,.card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#152039,#111a2d);padding:19px}.stat strong{display:block;font-size:25px;letter-spacing:-.04em}.stat span{font-size:12px;color:var(--muted)}section{scroll-margin-top:92px;margin:56px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:20px}.section-head h2{font-size:clamp(27px,4vw,38px);line-height:1.1;letter-spacing:-.04em;margin:7px 0}.section-head p{max-width:570px;color:var(--muted);margin:0}.kicker{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card h3{margin:4px 0 8px;font-size:19px}.card p,.card li{color:var(--muted)}.card ul{padding-left:20px;margin-bottom:0}.icon{font-size:22px}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.pill{font-size:11px;color:#c9d5e9;border:1px solid #344665;border-radius:99px;padding:4px 8px}.callout{padding:16px 18px;border-left:3px solid var(--yellow);background:#2e2a203c;border-radius:0 12px 12px 0;color:#e7d9b5;margin:18px 0}.callout.good{border-color:var(--accent);background:#17352e55;color:#c9f4e6}.callout.warn{border-color:var(--red);background:#3c202755;color:#ffd0d1}table{width:100%;border-collapse:collapse;font-size:14px;min-width:620px}th,td{text-align:left;padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.09em;background:#18243b}td{color:#cbd5e8}tr:last-child td{border:0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#111a2b}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#9fe8d2;background:#0a1220;padding:2px 5px;border-radius:5px;font-size:.92em}pre{margin:0;padding:18px;overflow:auto;background:#070d18;border:1px solid #283957;border-radius:12px;color:#d4e4ff;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre}pre code{background:none;padding:0;color:inherit}.codebox{margin:14px 0;border-radius:13px;overflow:hidden;border:1px solid var(--line)}.codebar{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:#18243a;color:#9eacc5;font-size:12px}.copy{border:1px solid #536481;background:transparent;color:#dfe9f8;border-radius:7px;padding:5px 9px;cursor:pointer}.checklist{display:grid;gap:10px}.check{display:flex;align-items:flex-start;gap:11px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#111a2d;color:#cbd5e8}.check input{accent-color:var(--accent);width:18px;height:18px;margin-top:3px}.check.done{border-color:#397b69;background:#12332d66}.progress{height:8px;border-radius:99px;background:#263653;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}.timeline{border-left:2px solid #344766;margin:10px 0 0 10px;padding-left:22px;display:grid;gap:19px}.milestone{position:relative}.milestone:before{content:'';position:absolute;left:-29px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px #1b3d3b}.milestone b{display:block}.milestone small{color:var(--muted)}.person{display:flex;gap:14px;align-items:center}.avatar{width:46px;height:46px;display:grid;place-items:center;background:#233957;border-radius:14px;font-weight:900;color:var(--accent)}.footer{border-top:1px solid var(--line);padding:27px 5vw;color:#74839e;font-size:12px;text-align:center}.mobile-menu{display:none;background:none;border:1px solid var(--line);color:white;border-radius:8px;padding:7px 10px}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{position:fixed;left:-290px;z-index:20;width:270px;transition:left .25s}.sidebar.open{left:0;box-shadow:var(--shadow)}.mobile-menu{display:inline-block}.stats{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr 1fr}.topbar{padding:0 20px}.content{padding:28px 20px 70px}}
+@media(max-width:620px){.grid2,.grid3{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:14px}.stat strong{font-size:21px}.section-head{display:block}.hero{border-radius:20px}.topbar{height:60px}}
+@media print{.sidebar,.topbar,.hero-actions,.copy,.mobile-menu{display:none!important}.shell{display:block}.content{max-width:none;padding:0}.hero,.card,.stat{break-inside:avoid;box-shadow:none;background:white;color:#111}.hero p,.card p,.card li,td{color:#333}body{background:white;color:#111}section{break-inside:avoid}}
+</style></head>
+<body>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">SO</div><div><strong>Proyecto Final</strong><small>Sistemas Operativos · 2026-2</small></div></div>
+<nav class="nav">
+<div class="nav-label">Proyecto</div><a href="#inicio" class="active"><span>⌂</span>Portada</a><a href="#equipo"><span>◉</span>Grupo e integrantes</a><a href="#arquitectura"><span>▦</span>Arquitectura y versiones</a><div class="nav-label">Desarrollo</div><a href="#sprint0"><span>00</span>Sprint 0 · Plan</a><a href="#sprint1"><span>01</span>Sprint 1 · Montaje</a><a href="#sprint2"><span>02</span>Sprint 2 · Servicios</a><div class="nav-label">Seguimiento</div><a href="#evidencias"><span>✓</span>Evidencias y checklist</a><a href="#conclusiones"><span>✦</span>Conclusiones</a><a href="#fuentes"><span>↗</span>Fuentes y repositorio</a>
+</nav><div class="side-note"><b>Grupo 1</b><br>Universidad del Valle<br>Tecnología en Desarrollo de Software<br>Periodo 2026-2</div></aside>
+<main><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn">☰</button><span class="crumb">Sistemas Operativos / <b>Grupo 1</b></span></div><span class="tag">AVANCE HASTA SPRINT 2</span></header>
+<div class="content">
+<section id="inicio" style="margin-top:0"><div class="hero"><div class="eyebrow">Universidad del Valle · 750001C</div><h1>Dos sistemas.<br>Un entorno conectado.</h1><p>Montaje y administración de dos máquinas virtuales Linux, configuración de servicios, seguridad, automatización con Bash, gestión de procesos y primeros pasos con Docker.</p><div class="hero-actions"><a class="btn" href="#sprint1">Explorar el proyecto <span>→</span></a><a class="btn secondary" href="https://github.com/montilladario90-png/Proyecto-final-S.O" target="_blank" rel="noreferrer">Ver repositorio ↗</a></div></div>
+<div class="stats"><div class="stat"><strong>02</strong><span>Máquinas virtuales</span></div><div class="stat"><strong>02</strong><span>Sprints documentados</span></div><div class="stat"><strong>08</strong><span>Frentes del Sprint 2</span></div><div class="stat"><strong>01</strong><span>Grupo · Universidad del Valle</span></div></div></section>
+<section id="equipo"><div class="section-head"><div><div class="kicker">01 / Identidad del equipo</div><h2>Grupo 1</h2></div><p>El trabajo combina una estación gráfica para tareas de usuario y una máquina de consola para administración de servicios.</p></div><div class="grid2"><article class="card"><div class="person"><div class="avatar">LO</div><div><h3>Luisa Fernanda Ortega</h3><span class="pill">VM gráfica · Kubuntu</span></div></div><p>Responsable propuesta de la instalación y verificación de Kubuntu, script gráfico Bash, evidencias visuales y organización del sitio.</p></article><article class="card"><div class="person"><div class="avatar">DM</div><div><h3>Darío Montilla Narváez</h3><span class="pill">VM consola · Debian</span></div></div><p>Responsable propuesto de Debian, red y SSH, usuarios y permisos, firewall, script de consola, procesos y Docker.</p></article></div><div class="callout">La distribución de responsabilidades es una propuesta de organización del repositorio. Ambos integrantes deben participar en pruebas, documentación, videos y sustentación, y realizar sus commits desde sus propias cuentas.</div></section>
+<section id="arquitectura"><div class="section-head"><div><div class="kicker">02 / Diseño del entorno</div><h2>Arquitectura y versiones</h2></div><p>Dos máquinas virtuales conectadas mediante una red privada Host-only y con salida a Internet por NAT.</p></div><div class="grid2"><article class="card"><div class="icon">🖥️</div><h3>g01-grafica · Kubuntu</h3><p>Máquina con escritorio KDE Plasma para las aplicaciones gráficas, el script ejecutado desde un ícono y el origen de las conexiones SSH.</p><div class="meta"><span class="pill">Kubuntu 26.04.1 LTS · referencia</span><span class="pill">30 GB propuestos</span><span class="pill">4 GB RAM sugeridos</span></div></article><article class="card"><div class="icon">⌨️</div><h3>g01-consola · Debian</h3><p>Máquina sin escritorio, destinada a administración de usuarios, permisos, firewall, SSH, procesos y Docker.</p><div class="meta"><span class="pill">Debian 13.8 Trixie · referencia</span><span class="pill">25 GB requeridos</span><span class="pill">2 CPU requeridas</span></div></article></div><div class="table-wrap"><table><thead><tr><th>Componente</th><th>Asignación del Grupo 1</th><th>Uso</th><th>Estado documental</th></tr></thead><tbody><tr><td>VM gráfica</td><td>Kubuntu</td><td><code>g01-grafica</code></td><td>Versión de referencia documentada; validar instalación real</td></tr><tr><td>VM de consola</td><td>Debian</td><td><code>g01-consola</code></td><td>Versión de referencia documentada; validar instalación real</td></tr><tr><td>Imagen base Docker</td><td>Ubuntu 24.04 propuesta</td><td>Sprint 3</td><td>Fuera del alcance de esta entrega</td></tr></tbody></table></div>
+<div class="callout warn">Las versiones 26.04.1 y 13.8 aparecen en la documentación del grupo como referencias consultadas, no como resultados confirmados de las máquinas instaladas. La versión real debe obtenerse con <code>cat /etc/os-release</code>, <code>uname -r</code> y <code>date</code>.</div>
+<div class="card" style="margin-top:16px"><h3>Direccionamiento propuesto</h3><div class="table-wrap"><table><thead><tr><th>Equipo</th><th>Interfaz NAT</th><th>Interfaz Host-only</th><th>Red</th></tr></thead><tbody><tr><td>Kubuntu</td><td>DHCP VirtualBox</td><td><code>192.168.56.10/24</code></td><td rowspan="2"><code>192.168.56.0/24</code></td></tr><tr><td>Debian</td><td>DHCP VirtualBox</td><td><code>192.168.56.20/24</code></td></tr></tbody></table></div><p>Direcciones de ejemplo documentadas en el plan. Se deben sustituir por las que realmente muestre <code>ip -br addr</code> en cada VM.</p></div></section>
+<section id="sprint0"><div class="section-head"><div><div class="kicker">03 / Preparación</div><h2>Sprint 0 · Arranque</h2></div><p>Preparación del equipo, repositorio y documentación inicial.</p></div><div class="grid3"><article class="card"><div class="icon">📁</div><h3>Repositorio público</h3><p>Creación de la estructura base en GitHub y publicación del README del grupo.</p></article><article class="card"><div class="icon">🧭</div><h3>Plan de trabajo</h3><p>Definición del objetivo, distribución propuesta de responsabilidades y cronograma de los sprints.</p></article><article class="card"><div class="icon">🔎</div><h3>Ficha de versiones</h3><p>Registro de distribuciones asignadas, referencias oficiales y comandos para verificar las instalaciones.</p></article></div><div class="callout good">Documentación localizada en el repositorio: <code>README.md</code>, <code>plan/plan-de-trabajo.md</code> y <code>plan/ficha-version.md</code>.</div></section>
+<section id="sprint1"><div class="section-head"><div><div class="kicker">04 / Infraestructura</div><h2>Sprint 1 · Montaje</h2></div><p>Preparar las VM, configurar almacenamiento y aplicaciones, conectar la red y demostrar acceso remoto.</p></div><div class="grid2"><article class="card"><h3>Particionado de Kubuntu</h3><div class="table-wrap"><table><thead><tr><th>Volumen</th><th>Tamaño propuesto</th><th>Formato / montaje</th></tr></thead><tbody><tr><td>Raíz</td><td>20 GB</td><td>ext4 · <code>/</code></td></tr><tr><td>Intercambio</td><td>2 GB</td><td>swap</td></tr><tr><td>Personal</td><td>8 GB</td><td>ext4 · <code>/home</code></td></tr><tr><td><b>Total</b></td><td><b>30 GB</b></td><td>Disco propuesto</td></tr></tbody></table></div></article><article class="card"><h3>Particionado de Debian</h3><div class="table-wrap"><table><thead><tr><th>Volumen</th><th>Tamaño propuesto</th><th>Formato / montaje</th></tr></thead><tbody><tr><td>Raíz</td><td>8 GB</td><td>ext4 · <code>/</code></td></tr><tr><td>Intercambio</td><td>2 GB</td><td>swap</td></tr><tr><td>Personal</td><td>5 GB</td><td>ext4 · <code>/home</code></td></tr><tr><td>Variables</td><td>10 GB</td><td>ext4 · <code>/var</code></td></tr><tr><td><b>Total</b></td><td><b>25 GB</b></td><td>Requisito de disco</td></tr></tbody></table></div></article></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>Aplicaciones en Kubuntu</h3><ul><li>Firefox y Falkon: dos navegadores.</li><li>Kate y Geany: dos editores de texto/código.</li><li>Verificación con <code>dpkg -l</code> y ejecución desde el menú.</li></ul><pre><code>sudo apt update
+sudo apt install -y firefox falkon kate geany
+dpkg -l firefox falkon kate geany
+date</code></pre></article><article class="card"><h3>Herramientas en Debian</h3><ul><li><code>make</code>, <code>rsync</code>, <code>curl</code>, <code>git</code> y <code>wget</code>.</li><li>Servidor SSH mediante <code>openssh-server</code>.</li></ul><pre><code>sudo apt update
+sudo apt install -y make rsync curl git wget openssh-server
+sudo systemctl enable --now ssh
+systemctl is-active ssh
+date</code></pre></article></div>
+<div class="card" style="margin-top:14px"><h3>Red y conectividad</h3><p>Adaptador 1: NAT para Internet. Adaptador 2: el mismo Host-only en las dos VM. Comprobar IP, rutas, ping en ambos sentidos y sesión SSH desde Kubuntu hacia Debian.</p><div class="codebox"><div class="codebar"><span>Comprobaciones principales</span><button class="copy" data-copy="ip -br addr\nip route\nping -c 4 192.168.56.20\nssh usuario@192.168.56.20\nwhoami\nhostname\ndate">Copiar</button></div><pre><code>ip -br addr
+ip route
+ping -c 4 192.168.56.20
+ssh usuario@192.168.56.20
+whoami
+hostname
+date</code></pre></div><p>Crear una instantánea por VM con el nombre exacto <code>instalacion-limpia</code> una vez verificada la instalación.</p></div>
+<div class="callout">La documentación completa del Sprint 1 ya está en el repositorio. El registro describe la configuración y los resultados esperados; las capturas y los resultados de ejecución deben adjuntarse después de realizar las pruebas reales.</div></section>
+<section id="sprint2"><div class="section-head"><div><div class="kicker">05 / Administración y servicios</div><h2>Sprint 2 · Servicios</h2></div><p>Ocho actividades para administrar usuarios, endurecer el acceso, automatizar tareas, observar procesos e instalar Docker Engine.</p></div>
+<div class="callout warn"><b>Estado:</b> el repositorio inspeccionado todavía no contiene una carpeta de Sprint 2 ni evidencias técnicas de ejecución. Esta sección presenta el desarrollo técnico y los comandos de trabajo derivados del plan de trabajo del grupo. Deben ejecutarse y validarse en <code>g01-consola</code> y <code>g01-grafica</code> antes de declarar cada requisito completado.</div>
+<div class="card"><h3>01 · Usuarios, grupo y directorio compartido</h3><p>Crear un usuario para cada integrante, agruparlos en <code>proyecto</code> y centralizar los archivos en <code>/srv/proyecto</code>.</p><div class="codebox"><div class="codebar"><span>Debian · ejecutar como administrador</span><button class="copy" data-copy="sudo addgroup proyecto\nsudo adduser luisa\nsudo adduser dario\nsudo usermod -aG proyecto luisa\nsudo usermod -aG proyecto dario\nsudo mkdir -p /srv/proyecto\nsudo chown root:proyecto /srv/proyecto\nsudo chmod 2775 /srv/proyecto\ngetent group proyecto\nls -ld /srv/proyecto\ndate">Copiar</button></div><pre><code>sudo addgroup proyecto
+sudo adduser luisa
+sudo adduser dario
+sudo usermod -aG proyecto luisa
+sudo usermod -aG proyecto dario
+sudo mkdir -p /srv/proyecto
+sudo chown root:proyecto /srv/proyecto
+sudo chmod 2775 /srv/proyecto
+getent group proyecto
+ls -ld /srv/proyecto
+date</code></pre></div><p>El bit setgid (<code>2</code>) en el directorio permite que los nuevos elementos hereden el grupo <code>proyecto</code>. Cambiar <code>luisa</code> y <code>dario</code> si los nombres reales de cuenta son distintos.</p></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>02 · Permisos, sudo, chmod y chown</h3><p>La cuenta administrativa tendrá privilegio <code>sudo</code>; la otra será una cuenta sin privilegios de administración. El directorio común conserva permisos de grupo.</p><pre><code># Usuario autorizado para sudo
+sudo usermod -aG sudo dario
+
+# Verificar grupos efectivos
+id dario
+id luisa
+
+# Demostrar chmod y chown
+sudo touch /srv/proyecto/prueba.txt
+sudo chown dario:proyecto /srv/proyecto/prueba.txt
+sudo chmod 664 /srv/proyecto/prueba.txt
+ls -l /srv/proyecto/prueba.txt
+
+# Probar sudo con cada cuenta
+sudo -l</code></pre><p>Elegir un único usuario como administrador y comprobar que la otra cuenta no pertenece al grupo <code>sudo</code>. Cerrar sesión y volver a entrar para actualizar los grupos.</p></article><article class="card"><h3>03 · Firewall: SSH permitido y resto bloqueado</h3><p>En Debian se puede usar UFW. Política predeterminada: denegar entrada, permitir salida y autorizar únicamente SSH antes de activar el firewall.</p><pre><code>sudo apt update
+sudo apt install -y ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp
+sudo ufw enable
+sudo ufw status verbose
+
+# Comprobar 8080 cerrado
+sudo ss -tlnp | grep ':8080' || echo "8080 sin servicio"
+
+# Abrir 8080 para la demostración
+sudo ufw allow 8080/tcp
+sudo ufw status numbered</code></pre><p>Para demostrar el cierre y apertura, iniciar un servicio de prueba en 8080, validar conectividad desde otra VM y retirar la regla al finalizar.</p></article></div>
+<div class="card" style="margin-top:14px"><h3>04 · Acceso SSH con llave y actualización del sistema</h3><p>Generar una llave en Kubuntu, instalar la llave pública en la cuenta de Debian y probar la conexión sin contraseña. Conservar una copia privada segura: nunca publicar la llave privada.</p><pre><code># En Kubuntu (cuenta que inicia la conexión)
+ssh-keygen -t ed25519 -C "grupo1-2026-2"
+ssh-copy-id dario@192.168.56.20
+ssh -o PreferredAuthentications=publickey dario@192.168.56.20
+
+# En Debian: revisar permisos SSH
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+
+# Actualizar Debian
+sudo apt update
+sudo apt upgrade -y
+sudo reboot</code></pre><p>Realizar la actualización cuando sea seguro reiniciar y documentar la versión del sistema antes y después.</p></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>05 · Script gráfico Bash</h3><p>Script con función, condicional, ciclo y comentarios. Se lanza desde un ícono del escritorio en Kubuntu.</p><pre><code>#!/usr/bin/env bash
+# Resumen gráfico de uso del sistema
+set -u
+
+mostrar_resumen() {
+  echo "Equipo: $(hostname)"
+  echo "Fecha: $(date)"
+  echo "Usuario: $(whoami)"
+}
+
+mostrar_resumen
+
+if command -v df >/dev/null 2>&1; then
+  echo "Uso de discos:"
+  for ruta in / /home; do
+    if mountpoint -q "$ruta"; then
+      df -h "$ruta" | tail -n 1
+    fi
+  done
+else
+  echo "No se encontró df"
+fi
+read -r -p "Presiona Enter para cerrar..."</code></pre><p>Guardar como <code>resumen-sistema.sh</code>, dar permiso con <code>chmod +x</code> y crear un lanzador <code>.desktop</code> que ejecute el script en una terminal.</p></article><article class="card"><h3>06 · Script de consola con argumento y validaciones</h3><p>Recibe un directorio como argumento, valida cantidad de parámetros y existencia del directorio, y devuelve un código distinto de cero cuando falla.</p><pre><code>#!/usr/bin/env bash
+# Cuenta archivos regulares de un directorio
+set -u
+
+if [[ $# -ne 1 ]]; then
+  echo "Uso: $0 DIRECTORIO" >&2
+  exit 2
+fi
+
+ruta=$1
+if [[ ! -d "$ruta" ]]; then
+  echo "Error: no existe el directorio: $ruta" >&2
+  exit 1
+fi
+
+cantidad=$(find "$ruta" -maxdepth 1 -type f | wc -l)
+echo "Directorio: $ruta"
+echo "Archivos regulares: $cantidad"
+exit 0</code></pre><p>Guardar como <code>contar-archivos.sh</code> y probar ruta válida, ruta inexistente y ausencia de argumento. Verificar <code>echo $?</code> después de cada ejecución.</p></article></div>
+<div class="card" style="margin-top:14px"><h3>07 · Procesos y estados R, S, T y Z</h3><p>Observar procesos con <code>ps</code> y <code>top</code>, enviar señales con <code>kill</code> y modificar prioridades con <code>nice</code> y <code>renice</code>.</p><pre><code># Listar procesos y estado
+ps -eo pid,ppid,stat,ni,comm --sort=pid
+top
+
+# Crear un proceso controlado de prueba
+sleep 300 &
+PID=$!
+ps -o pid,stat,ni,comm -p "$PID"
+
+# Ejecutar con prioridad modificada
+nice -n 10 sleep 300 &
+PID_NICE=$!
+renice 15 -p "$PID_NICE"
+ps -o pid,stat,ni,comm -p "$PID_NICE"
+
+# Terminar procesos de prueba
+kill "$PID" "$PID_NICE"
+wait "$PID" "$PID_NICE" 2>/dev/null || true</code></pre><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Significado</th><th>Cómo reconocerlo</th></tr></thead><tbody><tr><td><code>R</code></td><td>Running / runnable</td><td>En ejecución o listo para usar CPU</td></tr><tr><td><code>S</code></td><td>Interruptible sleep</td><td>En espera interrumpible (por ejemplo, <code>sleep</code>)</td></tr><tr><td><code>T</code></td><td>Stopped / traced</td><td>Detenido por señal o bajo seguimiento</td></tr><tr><td><code>Z</code></td><td>Zombie</td><td>Terminó, pero el padre aún no recogió su estado</td></tr></tbody></table></div><p>Para evidenciar T, ejecutar un proceso en primer plano y pulsar <code>Ctrl+Z</code>; para Z, crear un proceso hijo corto cuyo padre no recoja inmediatamente su estado, y observarlo con <code>ps</code>. No matar procesos del sistema para generar ejemplos.</p></div>
+<div class="card" style="margin-top:14px"><h3>08 · Docker Engine y hello-world</h3><p>Instalar Docker Engine en Debian y validar que el demonio funciona ejecutando la imagen de prueba.</p><pre><code># Método de repositorio APT de Debian (paquetes disponibles)
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo systemctl status docker --no-pager
+
+# Verificar Docker
+sudo docker version
+sudo docker run hello-world
+sudo docker images
+date</code></pre><p>Si se usa el repositorio oficial de Docker en lugar del paquete de Debian, seguir las instrucciones oficiales para Debian y registrar qué método se aplicó. No añadir usuarios al grupo <code>docker</code> sin comprender que ese grupo concede privilegios equivalentes a root.</p></div>
+<div class="callout good">El código anterior es una guía ejecutable para implementar el Sprint 2. Ajustar nombres de usuarios, dirección IP, políticas y distribución de tareas con la instalación real. Los resultados deben anotarse a partir de la terminal.</div>
+</section>
+<section id="evidencias"><div class="section-head"><div><div class="kicker">06 / Verificación</div><h2>Evidencias y checklist</h2></div><p>Marca cada punto después de realizarlo y subir la evidencia correspondiente al repositorio.</p></div><div class="card"><h3>Progreso del seguimiento</h3><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:13px"><span id="progressLabel">0 de 18 tareas verificadas</span><b id="progressPct">0%</b></div><div class="progress"><span id="progressBar"></span></div><div class="checklist" id="checks">
+<label class="check"><input type="checkbox"><span><b>Sprint 0:</b> repositorio público y estructura inicial del proyecto.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 0:</b> plan de trabajo y ficha de versiones publicados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> Kubuntu instalado, particiones, dos navegadores y dos editores verificados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> Debian instalado con 25 GB, 2 CPU, particiones y herramientas requeridas.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> NAT y Host-only configurados en ambas máquinas.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> ping bidireccional y SSH desde Kubuntu hacia Debian probados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> instantáneas <code>instalacion-limpia</code> creadas en ambas VM.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 1:</b> capturas, video de 3 minutos y código oficial del sprint entregados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> dos usuarios, grupo <code>proyecto</code> y <code>/srv/proyecto</code> creados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> permisos, sudo para un usuario, chmod y chown demostrados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> firewall permite SSH, deniega entrada restante y demuestra 8080 cerrado/abierto.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> SSH por llave configurado y sistema actualizado.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> script gráfico ejecutado desde ícono en Kubuntu.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> script de consola probado con argumentos, validaciones y códigos de salida.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> procesos R, S, T y Z observados; ps, top, kill, nice y renice utilizados.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> Docker Engine instalado y <code>hello-world</code> ejecutado correctamente.</span></label>
+<label class="check"><input type="checkbox"><span><b>Sprint 2:</b> evidencias, comandos, video continuo de 4 minutos y commits individuales listos.</span></label>
+<label class="check"><input type="checkbox"><span><b>Publicación:</b> página GitHub Pages revisada y accesible mediante URL pública.</span></label>
+</div><div class="hero-actions"><button class="btn secondary" id="resetChecks">Reiniciar checklist</button><button class="btn" id="printPage">Imprimir / Guardar PDF</button></div><p style="font-size:12px;color:var(--muted)">El estado de las casillas se conserva en el navegador de este dispositivo. No sustituye los commits, las capturas ni la entrega en GitHub.</p></div>
+<div class="grid2" style="margin-top:15px"><article class="card"><h3>Capturas técnicas</h3><p>Las capturas exigidas deben ser originales, sin recortar ni editar, mostrar el prompt y el comando <code>date</code>. Subirlas por requisito y enlazarlas desde la documentación.</p><p>Propuesta de organización:</p><pre><code>evidencias/
+  sprint-1/
+  sprint-2/
+    01-usuarios-grupo.png
+    02-permisos-sudo.png
+    03-firewall-8080.png
+    04-ssh-llaves.png
+    05-script-grafico.png
+    06-script-consola.png
+    07-procesos-estados.png
+    08-docker-hello-world.png</code></pre></article><article class="card"><h3>Videos y commits</h3><ul><li>Sprint 1: video continuo de 3 minutos.</li><li>Sprint 2: video continuo de 4 minutos.</li><li>Ambos integrantes deben aparecer con su cara en los videos.</li><li>Mínimo 2 commits propios por integrante y por sprint.</li><li>Guardar el código del sprint en <code>codigo_sprintN.txt</code> en ambas VM y mostrarlo con <code>cat</code> y <code>date</code>.</li></ul></article></div></section>
+<section id="conclusiones"><div class="section-head"><div><div class="kicker">07 / Cierre de avance</div><h2>Conclusiones del trabajo</h2></div><p>Texto base para la reflexión técnica del estado actual. Debe revisarse y complementarse con la experiencia real del equipo.</p></div><div class="grid2"><article class="card"><h3>Conclusión técnica del equipo</h3><p>El proyecto define una arquitectura de dos máquinas Linux con responsabilidades complementarias: Kubuntu proporciona el entorno gráfico y Debian concentra la administración por consola. El primer sprint establece el montaje, almacenamiento, herramientas y conectividad mediante NAT y Host-only. El segundo sprint amplía esa infraestructura con administración de identidades y permisos, reglas de firewall, autenticación SSH por llave, automatización con Bash, análisis de procesos y Docker. La aceptación técnica depende de ejecutar y registrar cada comprobación en las máquinas reales.</p></article><article class="card"><h3>Aprendizajes esperados</h3><p>El trabajo permite relacionar conceptos fundamentales de sistemas operativos con tareas prácticas: jerarquía de archivos, cuentas y grupos, permisos Unix, filtrado de tráfico, autenticación criptográfica, scripting, planificación de CPU y virtualización de aplicaciones. La documentación reproducible facilita diagnosticar fallos y demostrar el funcionamiento del entorno.</p></article></div><div class="callout warn">Estas conclusiones son un borrador de apoyo, no una declaración de pruebas realizadas. Añadir experiencias, dificultades y resultados reales individuales antes de entregar.</div></section>
+<section id="fuentes"><div class="section-head"><div><div class="kicker">08 / Trazabilidad</div><h2>Fuentes y repositorio</h2></div><p>Documentación de referencia del proyecto y fuentes técnicas oficiales para continuar el desarrollo.</p></div><div class="card"><h3>Repositorio del Grupo 1</h3><p><a href="https://github.com/montilladario90-png/Proyecto-final-S.O" target="_blank" rel="noreferrer">github.com/montilladario90-png/Proyecto-final-S.O ↗</a></p><div class="table-wrap"><table><thead><tr><th>Archivo</th><th>Contenido</th></tr></thead><tbody><tr><td><code>README.md</code></td><td>Identidad del grupo y configuración asignada.</td></tr><tr><td><code>plan/plan-de-trabajo.md</code></td><td>Objetivos, roles, cronograma y requisitos de los sprints.</td></tr><tr><td><code>plan/ficha-version.md</code></td><td>Referencias de versiones y comandos de comprobación.</td></tr><tr><td><code>sprint-1/README.md</code></td><td>Desarrollo detallado del montaje de las dos VM.</td></tr><tr><td><code>sprint-2/</code></td><td>Sección web preparada; documentar resultados y evidencias reales para cerrar el sprint.</td></tr></tbody></table></div></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>Documentación oficial</h3><ul><li><a href="https://www.debian.org/doc/" target="_blank" rel="noreferrer">Manual de Debian</a></li><li><a href="https://documentation.ubuntu.com/server/" target="_blank" rel="noreferrer">Ubuntu Server documentation</a></li><li><a href="https://documentation.ubuntu.com/server/how-to/security/firewalls/" target="_blank" rel="noreferrer">Firewall UFW</a></li><li><a href="https://www.openssh.com/manual.html" target="_blank" rel="noreferrer">OpenSSH manual</a></li><li><a href="https://docs.docker.com/engine/install/debian/" target="_blank" rel="noreferrer">Instalación Docker Engine en Debian</a></li><li><a href="https://www.gnu.org/software/bash/manual/" target="_blank" rel="noreferrer">GNU Bash manual</a></li></ul></article><article class="card"><h3>Referencias del montaje</h3><ul><li><a href="https://kubuntu.org/download/" target="_blank" rel="noreferrer">Descargas oficiales Kubuntu</a></li><li><a href="https://www.debian.org/releases/" target="_blank" rel="noreferrer">Versiones de Debian</a></li><li><a href="https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/networkingdetails.html" target="_blank" rel="noreferrer">Redes en VirtualBox 7.2</a></li><li><a href="https://github.com/montilladario90-png/Proyecto-final-S.O/blob/main/sprint-1/README.md" target="_blank" rel="noreferrer">Documentación Sprint 1 del grupo</a></li></ul></article></div>
+<div class="callout good"><b>Declaración de uso de IA:</b> se utilizó una herramienta de IA como apoyo para estructurar el contenido web y proponer ejemplos y explicaciones técnicas. El equipo debe revisar, comprender y adaptar el contenido, verificar los comandos en sus propias máquinas y elaborar de forma auténtica las evidencias y reflexiones solicitadas. La IA no sustituye la ejecución de pruebas ni la producción de capturas y videos.</div></section>
+</div><footer class="footer">Proyecto Final · Sistemas Operativos 750001C · Universidad del Valle · 2026-2<br>Grupo 1 · Luisa Fernanda Ortega y Darío Montilla Narváez</footer></main></div>
+<script>
+const sidebar=document.getElementById('sidebar');document.getElementById('menuBtn').addEventListener('click',()=>sidebar.classList.toggle('open'));document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.nav a').forEach(n=>n.classList.remove('active'));a.classList.add('active');sidebar.classList.remove('open')}));
+const boxes=[...document.querySelectorAll('#checks input')];function update(){const n=boxes.filter(x=>x.checked).length;const pct=Math.round(n/boxes.length*100);document.getElementById('progressLabel').textContent=`${n} de ${boxes.length} tareas verificadas`;document.getElementById('progressPct').textContent=pct+'%';document.getElementById('progressBar').style.width=pct+'%';boxes.forEach(x=>x.closest('.check').classList.toggle('done',x.checked));}boxes.forEach((x,i)=>{x.checked=localStorage.getItem('g1check'+i)==='1';x.addEventListener('change',()=>{localStorage.setItem('g1check'+i,x.checked?'1':'0');update()})});update();document.getElementById('resetChecks').addEventListener('click',()=>{boxes.forEach((x,i)=>{x.checked=false;localStorage.removeItem('g1check'+i)});update()});document.getElementById('printPage').addEventListener('click',()=>window.print());document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);const old=b.textContent;b.textContent='Copiado';setTimeout(()=>b.textContent=old,1300)}catch{b.textContent='No disponible'}}));
+</script></body></html>
