@@ -42,9 +42,10 @@ whoami
 hostname
 date</code></pre></div><p>Crear una instantánea por VM con el nombre exacto <code>instalacion-limpia</code> una vez verificada la instalación.</p></div>
 <div class="callout">La documentación completa del Sprint 1 ya está en el repositorio. El registro describe la configuración y los resultados esperados; las capturas y los resultados de ejecución deben adjuntarse después de realizar las pruebas reales.</div></section>
-<section id="sprint2"><div class="section-head"><div><div class="kicker">05 / Administración y servicios</div><h2>Sprint 2 · Servicios</h2></div><p>Ocho actividades para administrar usuarios, endurecer el acceso, automatizar tareas, observar procesos e instalar Docker Engine.</p></div>
-<div class="callout warn"><b>Estado:</b> el repositorio inspeccionado todavía no contiene una carpeta de Sprint 2 ni evidencias técnicas de ejecución. Esta sección presenta el desarrollo técnico y los comandos de trabajo derivados del plan de trabajo del grupo. Deben ejecutarse y validarse en <code>g01-consola</code> y <code>g01-grafica</code> antes de declarar cada requisito completado.</div>
-<div class="card"><h3>01 · Usuarios, grupo y directorio compartido</h3><p>Crear un usuario para cada integrante, agruparlos en <code>proyecto</code> y centralizar los archivos en <code>/srv/proyecto</code>.</p><div class="codebox"><div class="codebar"><span>Debian · ejecutar como administrador</span><button class="copy" data-copy="sudo addgroup proyecto\nsudo adduser luisa\nsudo adduser dario\nsudo usermod -aG proyecto luisa\nsudo usermod -aG proyecto dario\nsudo mkdir -p /srv/proyecto\nsudo chown root:proyecto /srv/proyecto\nsudo chmod 2775 /srv/proyecto\ngetent group proyecto\nls -ld /srv/proyecto\ndate">Copiar</button></div><pre><code>sudo addgroup proyecto
+<section id="sprint2"><div class="section-head"><div><div class="kicker">05 / Administración y servicios</div><h2>Sprint 2 · Servicios</h2></div><p>Desarrollo de los ocho puntos solicitados en la presentación oficial: usuarios y permisos, firewall, SSH por llave, dos scripts Bash, procesos y Docker Engine.</p></div>
+<div class="callout warn"><b>Alcance y estado:</b> esta sección desarrolla el procedimiento y los comandos para el Grupo 1 (Debian en <code>g01-consola</code> y Kubuntu en <code>g01-grafica</code>). La presentación del proyecto, página 6, enumera los requisitos del Sprint 2; no aporta nombres de usuario, reglas adicionales ni códigos de verificación. Por eso se usan nombres de cuenta de ejemplo y se distinguen los pasos que deben comprobarse en las VMs. No se declaran como ejecutadas pruebas que aún no tengan captura real.</div>
+<div class="card"><h3>Ficha del Sprint 2</h3><div class="table-wrap"><table><tbody><tr><th>Valor</th><td>1,2 puntos</td></tr><tr><th>Cierre para Santander de Quilichao</th><td>Jueves 10 de diciembre de 2026, 11:55 p. m. (según cronograma de la presentación, página 3)</td></tr><tr><th>VM principal</th><td><code>g01-consola</code> · Debian · usuarios, permisos, firewall, SSH y Docker</td></tr><tr><th>VM de apoyo</th><td><code>g01-grafica</code> · Kubuntu · generación de llave SSH y ejecución del script gráfico</td></tr><tr><th>Entregables</th><td>Página con 8 puntos, capturas, comandos y video continuo de 4 minutos; dos scripts en el repositorio; 2 commits propios por integrante; <code>codigo_sprint2.txt</code> en las dos VMs.</td></tr></tbody></table></div></div>
+<div class="card"><h3>01 · Usuarios, grupo y carpeta /srv/proyecto</h3><p>La consigna exige un usuario por integrante, un grupo llamado <code>proyecto</code> y la carpeta compartida <code>/srv/proyecto</code>. En Debian, abre una cuenta con permisos administrativos y ejecuta:</p><div class="codebox"><div class="codebar"><span>Debian · administrador</span><button class="copy" data-copy="sudo addgroup proyecto\nsudo adduser luisa\nsudo adduser dario\nsudo usermod -aG proyecto luisa\nsudo usermod -aG proyecto dario\nsudo mkdir -p /srv/proyecto\nsudo chown root:proyecto /srv/proyecto\nsudo chmod 2775 /srv/proyecto\ngetent group proyecto\nls -ld /srv/proyecto\nid luisa\nid dario\ndate">Copiar</button></div><pre><code>sudo addgroup proyecto
 sudo adduser luisa
 sudo adduser dario
 sudo usermod -aG proyecto luisa
@@ -54,22 +55,25 @@ sudo chown root:proyecto /srv/proyecto
 sudo chmod 2775 /srv/proyecto
 getent group proyecto
 ls -ld /srv/proyecto
-date</code></pre></div><p>El bit setgid (<code>2</code>) en el directorio permite que los nuevos elementos hereden el grupo <code>proyecto</code>. Cambiar <code>luisa</code> y <code>dario</code> si los nombres reales de cuenta son distintos.</p></div>
-<div class="grid2" style="margin-top:14px"><article class="card"><h3>02 · Permisos, sudo, chmod y chown</h3><p>La cuenta administrativa tendrá privilegio <code>sudo</code>; la otra será una cuenta sin privilegios de administración. El directorio común conserva permisos de grupo.</p><pre><code># Usuario autorizado para sudo
+id luisa
+id dario
+date</code></pre></div><p><b>Adaptación:</b> <code>luisa</code> y <code>dario</code> son nombres de cuenta sugeridos, no nombres impuestos por el profesor. Si ya existen cuentas, no repitas <code>adduser</code>; verifica sus nombres con <code>getent passwd</code> y usa los nombres reales. El modo <code>2775</code> activa setgid para heredar el grupo del directorio.</p></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>02 · Sudo, chmod y chown</h3><p>Debe existir una cuenta con sudo y otra sin sudo. En este ejemplo Darío será el usuario administrador y Luisa la cuenta estándar; pueden invertir la asignación, pero debe quedar demostrado cuál es cuál.</p><pre><code># Solo el usuario elegido como administrador
 sudo usermod -aG sudo dario
 
-# Verificar grupos efectivos
+# Verificar pertenencia a grupos
 id dario
 id luisa
 
-# Demostrar chmod y chown
-sudo touch /srv/proyecto/prueba.txt
-sudo chown dario:proyecto /srv/proyecto/prueba.txt
-sudo chmod 664 /srv/proyecto/prueba.txt
-ls -l /srv/proyecto/prueba.txt
+# Crear y asignar un archivo compartido
+sudo touch /srv/proyecto/ejemplo.txt
+sudo chown dario:proyecto /srv/proyecto/ejemplo.txt
+sudo chmod 664 /srv/proyecto/ejemplo.txt
+ls -l /srv/proyecto/ejemplo.txt
 
-# Probar sudo con cada cuenta
-sudo -l</code></pre><p>Elegir un único usuario como administrador y comprobar que la otra cuenta no pertenece al grupo <code>sudo</code>. Cerrar sesión y volver a entrar para actualizar los grupos.</p></article><article class="card"><h3>03 · Firewall: SSH permitido y resto bloqueado</h3><p>En Debian se puede usar UFW. Política predeterminada: denegar entrada, permitir salida y autorizar únicamente SSH antes de activar el firewall.</p><pre><code>sudo apt update
+# Consultar permisos sudo
+sudo -l</code></pre><p>Cierra sesión y vuelve a entrar para que se actualicen los grupos. Comprueba que el usuario estándar no pertenece a <code>sudo</code> y que no puede ejecutar tareas administrativas. No elimines el único acceso administrativo del sistema.</p></article>
+<article class="card"><h3>03 · Firewall: SSH permitido y puerto 8080</h3><p>La consigna pide permitir SSH, negar el resto de conexiones entrantes y demostrar que el puerto 8080 está cerrado y luego abierto. Configura primero la regla SSH para no perder el acceso remoto.</p><pre><code>sudo apt update
 sudo apt install -y ufw
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -77,49 +81,62 @@ sudo ufw allow 22/tcp
 sudo ufw enable
 sudo ufw status verbose
 
-# Comprobar 8080 cerrado
-sudo ss -tlnp | grep ':8080' || echo "8080 sin servicio"
+# Confirmar que no existe una regla 8080
+sudo ufw status numbered
 
-# Abrir 8080 para la demostración
+# Abrir 8080 temporalmente
 sudo ufw allow 8080/tcp
-sudo ufw status numbered</code></pre><p>Para demostrar el cierre y apertura, iniciar un servicio de prueba en 8080, validar conectividad desde otra VM y retirar la regla al finalizar.</p></article></div>
-<div class="card" style="margin-top:14px"><h3>04 · Acceso SSH con llave y actualización del sistema</h3><p>Generar una llave en Kubuntu, instalar la llave pública en la cuenta de Debian y probar la conexión sin contraseña. Conservar una copia privada segura: nunca publicar la llave privada.</p><pre><code># En Kubuntu (cuenta que inicia la conexión)
+sudo ufw status numbered</code></pre><p>Para probar el puerto, inicia en Debian un servicio temporal: <code>python3 -m http.server 8080 --bind 0.0.0.0</code>. Desde Kubuntu prueba <code>curl -I http://192.168.56.20:8080</code>. Antes de añadir la regla, la conexión debe fallar; después de permitirla, debe responder. Al terminar, detén el servidor con <code>Ctrl+C</code> y elimina la regla con <code>sudo ufw delete allow 8080/tcp</code>. Verifica el estado final.</p><p><b>Nota:</b> la dirección <code>192.168.56.20</code> corresponde al plan de red documentado en Sprint 1; sustitúyela por la IP real de Debian si cambió.</p></article></div>
+<div class="card" style="margin-top:14px"><h3>04 · Acceso SSH mediante llave y actualización</h3><p>La conexión debe realizarse desde Kubuntu hacia Debian sin solicitar la contraseña de la cuenta remota. Genera la llave en Kubuntu como el usuario que hará la conexión:</p><pre><code># Kubuntu · generar una llave Ed25519
 ssh-keygen -t ed25519 -C "grupo1-2026-2"
+
+# Copiar la llave pública al usuario real de Debian
 ssh-copy-id dario@192.168.56.20
+
+# Probar autenticación por llave
 ssh -o PreferredAuthentications=publickey dario@192.168.56.20
 
-# En Debian: revisar permisos SSH
+# Debian · revisar permisos de la llave autorizada
 chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys
-
-# Actualizar Debian
-sudo apt update
+chmod 600 ~/.ssh/authorized_keys</code></pre><p>Si <code>ssh-copy-id</code> no está disponible en Kubuntu, se puede instalar el paquete que lo proporciona o copiar manualmente el contenido de <code>~/.ssh/id_ed25519.pub</code> al archivo <code>~/.ssh/authorized_keys</code> del usuario remoto. Nunca publiques ni compartas <code>id_ed25519</code> (la llave privada).</p><p>Después de verificar el acceso por llave, actualiza Debian:</p><pre><code>sudo apt update
 sudo apt upgrade -y
-sudo reboot</code></pre><p>Realizar la actualización cuando sea seguro reiniciar y documentar la versión del sistema antes y después.</p></div>
-<div class="grid2" style="margin-top:14px"><article class="card"><h3>05 · Script gráfico Bash</h3><p>Script con función, condicional, ciclo y comentarios. Se lanza desde un ícono del escritorio en Kubuntu.</p><pre><code>#!/usr/bin/env bash
-# Resumen gráfico de uso del sistema
+# Registrar fecha y versión del sistema
+date
+cat /etc/os-release</code></pre><p>Reinicia solo si las actualizaciones lo requieren y vuelve a probar SSH.</p></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>05 · Script gráfico Bash en Kubuntu</h3><p>Debe ser útil, incluir una función, un <code>if</code>, un ciclo y comentarios, y lanzarse desde un ícono del escritorio o menú de aplicaciones. Guarda el archivo como <code>scripts/resumen-sistema.sh</code>:</p><pre><code>#!/usr/bin/env bash
+# Muestra información básica del equipo gráfico.
 set -u
 
 mostrar_resumen() {
   echo "Equipo: $(hostname)"
-  echo "Fecha: $(date)"
   echo "Usuario: $(whoami)"
+  echo "Fecha: $(date)"
 }
 
 mostrar_resumen
 
+# Comprobar herramientas antes de mostrar el almacenamiento.
 if command -v df >/dev/null 2>&1; then
-  echo "Uso de discos:"
+  echo "Uso de almacenamiento:"
   for ruta in / /home; do
     if mountpoint -q "$ruta"; then
       df -h "$ruta" | tail -n 1
     fi
   done
 else
-  echo "No se encontró df"
+  echo "No se encontró el comando df"
 fi
-read -r -p "Presiona Enter para cerrar..."</code></pre><p>Guardar como <code>resumen-sistema.sh</code>, dar permiso con <code>chmod +x</code> y crear un lanzador <code>.desktop</code> que ejecute el script en una terminal.</p></article><article class="card"><h3>06 · Script de consola con argumento y validaciones</h3><p>Recibe un directorio como argumento, valida cantidad de parámetros y existencia del directorio, y devuelve un código distinto de cero cuando falla.</p><pre><code>#!/usr/bin/env bash
-# Cuenta archivos regulares de un directorio
+
+read -r -p "Presiona Enter para cerrar..."</code></pre><p>Habilita la ejecución con <code>chmod +x scripts/resumen-sistema.sh</code> y pruébalo desde una terminal. Crea un lanzador llamado <code>Resumen del sistema.desktop</code> en el escritorio:</p><pre><code>[Desktop Entry]
+Type=Application
+Name=Resumen del sistema
+Comment=Consulta información básica del equipo
+Exec=konsole -e /bin/bash -lc '/ruta/absoluta/scripts/resumen-sistema.sh'
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;</code></pre><p>Sustituye <code>/ruta/absoluta/</code> por la ruta real. Da permiso al lanzador con <code>chmod +x</code> y, si KDE lo solicita, marca «Permitir lanzar».</p></article>
+<article class="card"><h3>06 · Script de consola con argumento y validaciones</h3><p>El script debe recibir un argumento, validar la entrada y devolver un código distinto de cero si falla. Guarda como <code>scripts/contar-archivos.sh</code>:</p><pre><code>#!/usr/bin/env bash
+# Cuenta archivos regulares del directorio recibido.
 set -u
 
 if [[ $# -ne 1 ]]; then
@@ -133,41 +150,63 @@ if [[ ! -d "$ruta" ]]; then
   exit 1
 fi
 
+if [[ ! -r "$ruta" ]]; then
+  echo "Error: no hay permiso de lectura: $ruta" >&2
+  exit 3
+fi
+
 cantidad=$(find "$ruta" -maxdepth 1 -type f | wc -l)
 echo "Directorio: $ruta"
 echo "Archivos regulares: $cantidad"
-exit 0</code></pre><p>Guardar como <code>contar-archivos.sh</code> y probar ruta válida, ruta inexistente y ausencia de argumento. Verificar <code>echo $?</code> después de cada ejecución.</p></article></div>
-<div class="card" style="margin-top:14px"><h3>07 · Procesos y estados R, S, T y Z</h3><p>Observar procesos con <code>ps</code> y <code>top</code>, enviar señales con <code>kill</code> y modificar prioridades con <code>nice</code> y <code>renice</code>.</p><pre><code># Listar procesos y estado
+exit 0</code></pre><p>Prueba los tres casos y registra el código de salida con <code>echo $?</code> inmediatamente después de cada ejecución:</p><pre><code>chmod +x scripts/contar-archivos.sh
+./scripts/contar-archivos.sh /srv/proyecto
+echo $?
+./scripts/contar-archivos.sh /ruta/no-existe
+echo $?
+./scripts/contar-archivos.sh
+echo $?</code></pre><p>Resultados esperados: <code>0</code> para directorio válido, <code>1</code> para directorio inexistente, <code>2</code> si falta el argumento y <code>3</code> si no hay permiso de lectura.</p></article></div>
+<div class="card" style="margin-top:14px"><h3>07 · Procesos: ps, top, kill, nice y renice</h3><p>Identifica procesos y demuestra los estados solicitados. Los estados son códigos observables en la columna <code>STAT</code> de <code>ps</code>.</p><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Significado</th><th>Descripción</th></tr></thead><tbody><tr><td><code>R</code></td><td>Running / runnable</td><td>En ejecución o listo para ejecutarse.</td></tr><tr><td><code>S</code></td><td>Interruptible sleep</td><td>En espera interrumpible; por ejemplo, <code>sleep</code>.</td></tr><tr><td><code>T</code></td><td>Stopped / traced</td><td>Detenido por una señal o bajo seguimiento.</td></tr><tr><td><code>Z</code></td><td>Zombie</td><td>Terminó, pero el proceso padre aún no recogió su estado.</td></tr></tbody></table></div><pre><code># Listar procesos con PID, estado y prioridad
 ps -eo pid,ppid,stat,ni,comm --sort=pid
 top
 
-# Crear un proceso controlado de prueba
+# Crear un proceso de prueba en segundo plano
 sleep 300 &
 PID=$!
 ps -o pid,stat,ni,comm -p "$PID"
 
-# Ejecutar con prioridad modificada
+# Iniciar otro proceso con prioridad modificada
 nice -n 10 sleep 300 &
 PID_NICE=$!
+ps -o pid,stat,ni,comm -p "$PID_NICE"
+
+# Ajustar prioridad del proceso existente
 renice 15 -p "$PID_NICE"
 ps -o pid,stat,ni,comm -p "$PID_NICE"
 
-# Terminar procesos de prueba
+# Terminar solo los procesos de prueba
 kill "$PID" "$PID_NICE"
-wait "$PID" "$PID_NICE" 2>/dev/null || true</code></pre><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Significado</th><th>Cómo reconocerlo</th></tr></thead><tbody><tr><td><code>R</code></td><td>Running / runnable</td><td>En ejecución o listo para usar CPU</td></tr><tr><td><code>S</code></td><td>Interruptible sleep</td><td>En espera interrumpible (por ejemplo, <code>sleep</code>)</td></tr><tr><td><code>T</code></td><td>Stopped / traced</td><td>Detenido por señal o bajo seguimiento</td></tr><tr><td><code>Z</code></td><td>Zombie</td><td>Terminó, pero el padre aún no recogió su estado</td></tr></tbody></table></div><p>Para evidenciar T, ejecutar un proceso en primer plano y pulsar <code>Ctrl+Z</code>; para Z, crear un proceso hijo corto cuyo padre no recoja inmediatamente su estado, y observarlo con <code>ps</code>. No matar procesos del sistema para generar ejemplos.</p></div>
-<div class="card" style="margin-top:14px"><h3>08 · Docker Engine y hello-world</h3><p>Instalar Docker Engine en Debian y validar que el demonio funciona ejecutando la imagen de prueba.</p><pre><code># Método de repositorio APT de Debian (paquetes disponibles)
-sudo apt update
+wait "$PID" "$PID_NICE" 2>/dev/null || true
+date</code></pre><p><b>Para evidenciar T:</b> ejecuta <code>sleep 300</code> en primer plano y pulsa <code>Ctrl+Z</code>; consulta su PID con <code>jobs -l</code> y su estado con <code>ps</code>. Reanúdalo o termínalo al finalizar.</p><p><b>Para evidenciar Z:</b> se necesita un proceso padre que no recoja temporalmente el estado de su hijo. No mates procesos del sistema para fabricar el ejemplo. Documenta el procedimiento de laboratorio y captura la salida real de <code>ps</code> si logras observarlo.</p><p>El estado R puede ser breve; no todos los procesos se observarán en todos los estados en una única captura. Explica qué muestra el resultado real.</p></div>
+<div class="card" style="margin-top:14px"><h3>08 · Docker Engine y hello-world</h3><p>La presentación (página 6) exige Docker Engine instalado y <code>hello-world</code> funcionando. En Debian, una opción sencilla es el paquete de la distribución:</p><pre><code>sudo apt update
 sudo apt install -y docker.io
 sudo systemctl enable --now docker
 sudo systemctl status docker --no-pager
 
-# Verificar Docker
+# Validar cliente, servidor y contenedor de prueba
 sudo docker version
 sudo docker run hello-world
 sudo docker images
-date</code></pre><p>Si se usa el repositorio oficial de Docker en lugar del paquete de Debian, seguir las instrucciones oficiales para Debian y registrar qué método se aplicó. No añadir usuarios al grupo <code>docker</code> sin comprender que ese grupo concede privilegios equivalentes a root.</p></div>
-<div class="callout good">El código anterior es una guía ejecutable para implementar el Sprint 2. Ajustar nombres de usuarios, dirección IP, políticas y distribución de tareas con la instalación real. Los resultados deben anotarse a partir de la terminal.</div>
+date</code></pre><p>La consigna también indica cerrar sesión después de agregarse al grupo <code>docker</code>. Si van a demostrar ejecución sin anteponer <code>sudo</code>, realiza:</p><pre><code>sudo usermod -aG docker "$USER"
+# Cerrar completamente la sesión y volver a entrar
+# Después de iniciar sesión nuevamente:
+groups
+docker run hello-world</code></pre><p><b>Seguridad:</b> pertenecer al grupo <code>docker</code> concede privilegios equivalentes a root en el host. Añade únicamente la cuenta que necesite administrar contenedores. Si no deseas otorgar ese nivel de privilegio, usa <code>sudo docker ...</code> y explica la decisión al docente; confirma el criterio de demostración con la consigna.</p></div>
+<div class="card" style="margin-top:14px"><h3>Archivos del Sprint 2 que deben quedar en GitHub</h3><div class="table-wrap"><table><thead><tr><th>Ruta sugerida</th><th>Contenido</th></tr></thead><tbody><tr><td><code>sprint-2/README.md</code></td><td>Los ocho puntos, comandos, explicación, resultados y conclusiones del sprint.</td></tr><tr><td><code>scripts/resumen-sistema.sh</code></td><td>Script gráfico Bash desarrollado en Kubuntu.</td></tr><tr><td><code>scripts/contar-archivos.sh</code></td><td>Script de consola con argumentos, validaciones y códigos de salida.</td></tr><tr><td><code>sprint-2/evidencias/</code></td><td>Capturas reales, una por punto, sin recortes ni ediciones.</td></tr><tr><td><code>sprint-2/video</code></td><td>Enlace o inserción del video continuo de 4 minutos.</td></tr></tbody></table></div><p>La presentación exige dos scripts en el repositorio; no basta con pegar el código solamente en esta página.</p></div>
+<div class="grid2" style="margin-top:14px"><article class="card"><h3>Capturas y verificación</h3><p>La presentación, página 10, indica una captura por punto, con el prompt y el comando <code>date</code> visibles; se permiten varios comandos por captura si se leen completos. No recortar ni editar las capturas.</p><ol><li>Usuarios, grupo y <code>/srv/proyecto</code>: <code>id</code>, <code>getent group</code>, <code>ls -ld</code>.</li><li>Privilegios y permisos: <code>id</code>, <code>sudo -l</code>, <code>ls -l</code>.</li><li>Firewall y puerto 8080: <code>ufw status verbose</code> y prueba desde Kubuntu.</li><li>SSH por llave: conexión remota sin contraseña y <code>whoami</code>.</li><li>Script gráfico: ventana lanzada desde el ícono en Kubuntu.</li><li>Script de consola: pruebas válidas e inválidas y sus códigos de salida.</li><li>Procesos: salidas de <code>ps</code>/<code>top</code>, nice/renice y estados.</li><li>Docker: <code>docker version</code> y salida completa de <code>hello-world</code>.</li></ol></article><article class="card"><h3>Video, commits y código del sprint</h3><ul><li>Video continuo de <b>4 minutos</b>; aparecen Luisa y Darío, con su cara.</li><li>Luisa: mínimo 2 commits propios durante Sprint 2.</li><li>Darío: mínimo 2 commits propios durante Sprint 2.</li><li>Mensajes de commit descriptivos y fechas dentro del sprint.</li><li>Guardar el código oficial del docente en <code>codigo_sprint2.txt</code> en ambas VMs.</li><li>Mostrarlo con <code>cat ~/codigo_sprint2.txt</code> y después <code>date</code>.</li></ul><pre><code>cat ~/codigo_sprint2.txt
+date</code></pre><p>El código es una cadena corta que el docente publica 48 horas antes. No inventar su contenido ni usar un texto de ejemplo como si fuera el oficial.</p></article></div>
+<div class="callout good"><b>Criterio para declarar terminado:</b> cada uno de los ocho puntos debe contar con ejecución real, explicación breve, captura legible y resultado verificable. El video debe durar 4 minutos, los dos scripts deben estar versionados y cada integrante debe tener sus dos commits. Los comandos de esta página son una guía de implementación, no evidencia por sí mismos.</div>
 </section>
+
 <section id="evidencias"><div class="section-head"><div><div class="kicker">06 / Verificación</div><h2>Evidencias y checklist</h2></div><p>Marca cada punto después de realizarlo y subir la evidencia correspondiente al repositorio.</p></div><div class="card"><h3>Progreso del seguimiento</h3><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:13px"><span id="progressLabel">0 de 18 tareas verificadas</span><b id="progressPct">0%</b></div><div class="progress"><span id="progressBar"></span></div><div class="checklist" id="checks">
 <label class="check"><input type="checkbox"><span><b>Sprint 0:</b> repositorio público y estructura inicial del proyecto.</span></label>
 <label class="check"><input type="checkbox"><span><b>Sprint 0:</b> plan de trabajo y ficha de versiones publicados.</span></label>
