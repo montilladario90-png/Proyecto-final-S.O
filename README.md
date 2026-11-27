@@ -22,3 +22,10 @@
 - [Desarrollo completo del Sprint 1](sprint-1/README.md)
 
 > Las versiones de referencia están contrastadas con los anuncios oficiales. La versión instalada se comprueba en cada VM con `cat /etc/os-release` y se registra en [la ficha de versiones](plan/ficha-version.md).
+
+## Sprint 2 — Servicios
+- [Desarrollo completo del Sprint 2](sprint-2/README.md)
+- [Script gráfico Bash para Kubuntu](scripts/resumen-sistema.sh)
+- [Script de consola Bash para Debian](scripts/contar-archivos.sh)
+
+> El Sprint 2 desarrolla la administración de usuarios y permisos, firewall, acceso SSH mediante llaves, scripts Bash, gestión de procesos y Docker Engine. Las pruebas, capturas y video deben completarse con evidencias obtenidas en las máquinas virtuales del grupo.
